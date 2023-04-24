@@ -1,0 +1,145 @@
+@use '../../styles/variables.scss' as v;
+@use '../../styles/mixins.scss' as m;
+@use '../../styles/functions.scss' as f;
+
+.header {
+  padding-block: 2rem 0.5rem;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 13;
+  background-color: v.$black;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navWrapper {
+  display: flex;
+  justify-content: space-between;
+
+  @include m.tablet {
+    display: none;
+    position: absolute;
+  }
+}
+
+.navWrapper.active {
+  height: 80vh;
+  width: 65vw;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  background-color: #282c33;
+  top: 5rem;
+  right: 0;
+  overflow: auto;
+  padding: 2.9375rem 1rem;
+
+  @include m.phone {
+    width: 100vw;
+  }
+}
+
+.nav.active {
+  flex-direction: column;
+  align-items: flex-start;
+
+  .navList {
+    flex-direction: column;
+    row-gap: 2.1875rem;
+    align-items: flex-start;
+
+    a {
+      font-size: 2rem;
+      line-height: f.ratio(32, 41.98);
+    }
+  }
+}
+
+.navList,
+.nav {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.navItem {
+  &:hover {
+    color: v.$white;
+  }
+}
+
+.burgerMenu {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  justify-content: end;
+  cursor: pointer;
+  position: relative;
+
+  @media screen and (min-width:769px) {
+    display: none;
+    position: absolute;
+  }
+}
+
+.menuTablet {
+  width: 0.9375rem;
+  height: 0.125rem;
+  background-color: v.$white;
+  margin-top: 0.3125rem;
+
+
+  &::after,
+  &::before {
+    content: '';
+    width: 1.5rem;
+    height: 0.125rem;
+    background-color: v.$white;
+    position: absolute;
+    transition: all 0.3s;
+  }
+
+  &::after {
+    top: -0.125rem;
+    left: 0;
+  }
+
+  &::before {
+    visibility: hidden;
+    bottom: 0rem;
+    left: 0;
+  }
+}
+
+.menuTablet.active {
+  visibility: hidden;
+
+  &::after {
+    top: 0.625rem;
+    transform: rotate(45deg);
+    visibility: visible;
+    z-index: 5;
+  }
+
+  &::before {
+    top: 0.625rem;
+    transform: rotate(-45deg);
+    visibility: visible;
+    z-index: 5;
+  }
+}
+
+.language {
+  font-weight: 600;
+  text-transform: uppercase;
+  color: inherit;
+  background-color: transparent;
+  outline: none;
+  cursor: pointer;
+}
