@@ -1,29 +1,32 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import styles from './LoginPage.module.scss';
 
 function LoginPage() {
-  const { t } = useTranslation();
   return (
     <section className={styles.loginPage}>
       <div className="container">
         <div className={styles.container}>
-          <form action="/">
-            <input type="text" />
-            <input type="text" />
-            <button type="button">Ввійти</button>
+          <form className={styles.form} action="/" onSubmit={(e) => e.preventDefault()}>
+            <label htmlFor="name" className={styles.name}>
+              Ім&apos;я
+              <input type="text" id="name" placeholder="Ім'я" />
+            </label>
+            <label htmlFor="password" className={styles.password}>
+              Пароль
+              <input type="password" id="password" placeholder="пароль" />
+            </label>
+            <button type="submit" className={styles.btn}>
+              Ввійти
+            </button>
+            <Link to="/auth/register" className={styles.btn}>
+              Реєстрація
+            </Link>
           </form>
-          {t('LoginPage Component')}
-          LoginPage Component
         </div>
       </div>
     </section>
   );
 }
-
-// LoginPage.propTypes = {
-//   props: PropTypes.string.isRequired,
-// };
 
 export default LoginPage;

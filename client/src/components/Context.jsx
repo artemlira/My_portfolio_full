@@ -1,14 +1,20 @@
-import React, {
-  useState, createContext, useMemo, useEffect,
-} from 'react';
+import React, { useState, createContext, useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios'; // Connecting data via a server
+// import axios from 'axios'; // Connecting data via a server
+import axios from '../utils/axios'; // Connecting data via a server
 // import portfolio from '../DB';
 
 export const MyContext = createContext();
 
 export default function Context({ children }) {
   const [openMenu, setOpenMenu] = useState(false); // burger menu opening status
+
+  const [initialState, setInitialState] = useState({
+    user: null,
+    token: null,
+    isLoading: false,
+    status: null,
+  });
   // const [dataDB] = useState(portfolio); // to connect from a local file, not through a server
 
   // fetch data via fetch
@@ -31,8 +37,27 @@ export default function Context({ children }) {
   const [media, setMedia] = useState(null); // Connecting data via a server
   const [projects, setProjects] = useState(null); // Connecting data via a server
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const registerUser = async ({ userName, password }) => {
+    try {
+      const { data } = await axios.post('/auth/register', {
+        userName,
+        password,
+      });
+
+      if (data.token) {
+        window.localStorage.setItem('token', data.token);
+      }
+      // return data;
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
+  };
+
   const getData = (url, state) => {
-    axios.get(url)
+    axios
+      .get(url)
       .then((response) => {
         const { data } = response;
         state(data);
@@ -51,22 +76,37 @@ export default function Context({ children }) {
     getData('http://localhost:4444/projects', setProjects);
   }, []);
 
-  console.log(projects);
+  // console.log(projects);
 
-  const value = useMemo(() => ({
-    openMenu,
-    setOpenMenu,
-    // dataDB,
-    skills,
-    media,
-    contacts,
-    projects,
-    facts,
-  }), [openMenu, setOpenMenu, skills, media, contacts, projects, facts]);
-
-  return (
-    <MyContext.Provider value={value}>{children}</MyContext.Provider>
+  const value = useMemo(
+    () => ({
+      openMenu,
+      setOpenMenu,
+      // dataDB,
+      skills,
+      media,
+      contacts,
+      projects,
+      facts,
+      initialState,
+      setInitialState,
+      registerUser,
+    }),
+    [
+      openMenu,
+      setOpenMenu,
+      skills,
+      media,
+      contacts,
+      projects,
+      facts,
+      initialState,
+      setInitialState,
+      registerUser,
+    ],
   );
+
+  return <MyContext.Provider value={value}>{children}</MyContext.Provider>;
 }
 
 Context.propTypes = {
