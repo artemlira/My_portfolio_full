@@ -1,13 +1,18 @@
-/* eslint-disable no-underscore-dangle */
-import React, { useContext, forwardRef } from 'react';
+import React, { forwardRef, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { MyContext } from '../../Context';
+import { fetchSkills } from '../../../redux/slices/skills';
 import styles from './Skills.module.scss';
 
 function Skills() {
+  const dispatch = useDispatch();
+  const { skills } = useSelector((state) => state.skills);
+  useEffect(() => {
+    dispatch(fetchSkills());
+  }, [dispatch]);
+
   const { t, i18n } = useTranslation();
-  const { skills } = useContext(MyContext);
   return (
     <section className={styles.skills}>
       <div className="container">
@@ -17,8 +22,9 @@ function Skills() {
         </h2>
         <div className={styles.container}>
           <div className={styles.content}>
-            {skills?.map((item) => (
+            {skills.items?.map((item) => (
               <Skill
+                // eslint-disable-next-line no-underscore-dangle
                 key={item._id}
                 title={i18n.language === 'en' ? item.categoryEN : item.categoryUA}
                 text={item.value}

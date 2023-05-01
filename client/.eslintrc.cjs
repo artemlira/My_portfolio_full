@@ -9,11 +9,12 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: ['react'],
+  plugins: ['react', 'react-hooks'],
   rules: {
     'react/react-in-jsx-scope': 'off',
     'object-curly-newline': 'off',
     'linebreak-style': ['error', 'windows'],
+    'no-param-reassign': [2, { props: false }],
     'import/order': [
       'error',
       {

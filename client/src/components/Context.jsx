@@ -1,7 +1,7 @@
-import React, { useState, createContext, useMemo, useEffect } from 'react';
+import React, { useState, createContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 // import axios from 'axios'; // Connecting data via a server
-import axios from '../utils/axios'; // Connecting data via a server
+// import axios from '../utils/axios'; // Connecting data via a server
 // import portfolio from '../DB';
 
 export const MyContext = createContext();
@@ -9,12 +9,6 @@ export const MyContext = createContext();
 export default function Context({ children }) {
   const [openMenu, setOpenMenu] = useState(false); // burger menu opening status
 
-  const [initialState, setInitialState] = useState({
-    user: null,
-    token: null,
-    isLoading: false,
-    status: null,
-  });
   // const [dataDB] = useState(portfolio); // to connect from a local file, not through a server
 
   // fetch data via fetch
@@ -31,50 +25,50 @@ export default function Context({ children }) {
   // } = dataDB;
 
   // Receiving data via axios
-  const [skills, setSkills] = useState(null); // Connecting data via a server
-  const [contacts, setContacts] = useState(null); // Connecting data via a server
-  const [facts, setFacts] = useState(null); // Connecting data via a server
-  const [media, setMedia] = useState(null); // Connecting data via a server
-  const [projects, setProjects] = useState(null); // Connecting data via a server
+  // const [skills, setSkills] = useState(null); // Connecting data via a server
+  // const [contacts, setContacts] = useState(null); // Connecting data via a server
+  // const [facts, setFacts] = useState(null); // Connecting data via a server
+  // const [media, setMedia] = useState(null); // Connecting data via a server
+  // const [projects, setProjects] = useState(null); // Connecting data via a server
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const registerUser = async ({ userName, password }) => {
-    try {
-      const { data } = await axios.post('/auth/register', {
-        userName,
-        password,
-      });
+  // const registerUser = async ({ userName, password }) => {
+  //   try {
+  //     const { data } = await axios.post('/auth/register', {
+  //       userName,
+  //       password,
+  //     });
 
-      if (data.token) {
-        window.localStorage.setItem('token', data.token);
-      }
-      // return data;
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error);
-    }
-  };
+  //     if (data.token) {
+  //       window.localStorage.setItem('token', data.token);
+  //     }
+  //     // return data;
+  //   } catch (error) {
+  //     // eslint-disable-next-line no-console
+  //     console.log(error);
+  //   }
+  // };
 
-  const getData = (url, state) => {
-    axios
-      .get(url)
-      .then((response) => {
-        const { data } = response;
-        state(data);
-      })
-      .catch((error) => {
-        // eslint-disable-next-line no-console
-        console.error(error);
-      });
-  };
+  // const getData = (url, state) => {
+  //   axios
+  //     .get(url)
+  //     .then((response) => {
+  //       const { data } = response;
+  //       state(data);
+  //     })
+  //     .catch((error) => {
+  //       // eslint-disable-next-line no-console
+  //       console.error(error);
+  //     });
+  // };
 
-  useEffect(() => {
-    getData('http://localhost:4444/skills', setSkills);
-    getData('http://localhost:4444/contacts', setContacts);
-    getData('http://localhost:4444/facts', setFacts);
-    getData('http://localhost:4444/medias', setMedia);
-    getData('http://localhost:4444/projects', setProjects);
-  }, []);
+  // useEffect(() => {
+  //   getData('http://localhost:4444/skills', setSkills);
+  //   getData('http://localhost:4444/contacts', setContacts);
+  //   getData('http://localhost:4444/facts', setFacts);
+  //   getData('http://localhost:4444/medias', setMedia);
+  //   getData('http://localhost:4444/projects', setProjects);
+  // }, []);
 
   // console.log(projects);
 
@@ -83,26 +77,22 @@ export default function Context({ children }) {
       openMenu,
       setOpenMenu,
       // dataDB,
-      skills,
-      media,
-      contacts,
-      projects,
-      facts,
-      initialState,
-      setInitialState,
-      registerUser,
+      // skills,
+      // media,
+      // contacts,
+      // projects,
+      // facts,
+      // registerUser,
     }),
     [
       openMenu,
       setOpenMenu,
-      skills,
-      media,
-      contacts,
-      projects,
-      facts,
-      initialState,
-      setInitialState,
-      registerUser,
+      // skills,
+      // media,
+      // contacts,
+      // projects,
+      // facts,
+      // registerUser
     ],
   );
 
