@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { authSlise } from './slices/auth';
+import { authReducer } from './slices/auth';
 import { skillsReducer } from './slices/skills';
 import { projectsReducer } from './slices/projects';
 import { mediasReducer } from './slices/medias';
@@ -9,7 +9,7 @@ import { smallProjectsReducer } from './slices/smallProjects';
 
 const store = configureStore({
   reducer: {
-    auth: authSlise,
+    auth: authReducer,
     skills: skillsReducer,
     projects: projectsReducer,
     medias: mediasReducer,

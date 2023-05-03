@@ -1,5 +1,9 @@
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import Box from '@mui/material/Box';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import CircularProgress from '@mui/material/CircularProgress';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './redux/store';
@@ -9,7 +13,13 @@ import ScrollToTop from './components/ScrollToTop';
 import './i18n';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <Suspense fallback={<div className="loading">Loading...</div>}>
+  <Suspense
+    fallback={(
+      <Box className="loading" sx={{ display: 'flex' }}>
+        <CircularProgress color="secondary" />
+      </Box>
+    )}
+  >
     <BrowserRouter>
       <Provider store={store}>
         <ScrollToTop />

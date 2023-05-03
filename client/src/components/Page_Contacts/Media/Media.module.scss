@@ -17,10 +17,6 @@
   color: v.$white;
   position: relative;
 
-  &:not(:last-child) {
-    margin-bottom: 1.4375rem;
-  }
-
   span {
     color: v.$purple;
   }

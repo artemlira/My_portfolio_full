@@ -1,15 +1,18 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Card } from '../../Page_Home/Projects/Projects';
 import { fetchProjects } from '../../../redux/slices/projects';
+import { selectIsAuth } from '../../../redux/slices/auth';
 import styles from './Complete.module.scss';
 
 function Complete() {
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const { projects } = useSelector((state) => state.projects);
+  const isAuth = useSelector(selectIsAuth);
 
   useEffect(() => {
     dispatch(fetchProjects());
@@ -19,10 +22,13 @@ function Complete() {
   return (
     <section className={styles.complete}>
       <div className="container">
-        <h2 className={styles.title}>
-          <span>#</span>
-          {t('complete_title')}
-        </h2>
+        <div className="wrapperTitle">
+          <h2 className={styles.title}>
+            <span>#</span>
+            {t('complete_title')}
+          </h2>
+          {isAuth && <AddCircleIcon color="secondary" fontSize="large" />}
+        </div>
         <div className={styles.container}>
           {completeApps?.map((project) => (
             <Card
@@ -37,6 +43,7 @@ function Complete() {
               }
               git={project.git}
               deploy={project.deploy}
+              isAuth={isAuth}
             />
           ))}
         </div>
@@ -44,15 +51,5 @@ function Complete() {
     </section>
   );
 }
-
-Card.propTypes = {
-  img: PropTypes.string.isRequired,
-  imgWebp: PropTypes.string.isRequired,
-  skills: PropTypes.arrayOf(PropTypes.string).isRequired,
-  title: PropTypes.string.isRequired,
-  git: PropTypes.string.isRequired,
-  deploy: PropTypes.string.isRequired,
-  text: PropTypes.string.isRequired,
-};
 
 export default Complete;

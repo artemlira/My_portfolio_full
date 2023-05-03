@@ -2,6 +2,10 @@ import React, { forwardRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import ModeIcon from '@mui/icons-material/Mode';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { Link } from 'react-router-dom';
 import { fetchProjects } from '../../../redux/slices/projects';
 import styles from './Projects.module.scss';
@@ -51,6 +55,7 @@ function Projects() {
                     }
                 git={project.git}
                 deploy={project.deploy}
+                isAuth={false}
               />
               ),
             )}
@@ -61,37 +66,45 @@ function Projects() {
   );
 }
 
-export const Card = forwardRef(({ img, imgWebp, skills, title, text, git, deploy }, ref) => (
-  <div className={styles.card} ref={ref}>
-    <div className={styles.cardImage}>
-      <picture>
-        <source srcSet={imgWebp} type="image/webp" />
-        <img src={img} alt="njklk" />
-      </picture>
-    </div>
-    <div className={styles.cardSkills}>
-      {skills.map((skill) => (
-        <span key={skill}>{skill}</span>
-      ))}
-    </div>
-    <div className={styles.content}>
-      <div className={styles.cardTitle}>
-        <h3>{title}</h3>
+export const Card = forwardRef(
+  ({ img, imgWebp, skills, title, text, git, deploy, isAuth }, ref) => (
+    <div className={styles.card} ref={ref}>
+      <div className={styles.cardImage}>
+        <picture>
+          <source srcSet={imgWebp} type="image/webp" />
+          <img src={img} alt="njklk" />
+        </picture>
       </div>
-      <div className={styles.cardDescription}>
-        <p>{text}</p>
+      <div className={styles.cardSkills}>
+        {skills.map((skill) => (
+          <span key={skill}>{skill}</span>
+        ))}
       </div>
-      <div className={styles.cardLinks}>
-        <a className={styles.deploy} href={deploy} target="_blank" rel="noreferrer">
-          Deploy
-        </a>
-        <a className={styles.git} href={git} target="_blank" rel="noreferrer">
-          Git
-        </a>
+      <div className={styles.content}>
+        <div className={styles.cardTitle}>
+          <h3>{title}</h3>
+        </div>
+        <div className={styles.cardDescription}>
+          <p>{text}</p>
+        </div>
+        <div className={styles.cardLinks}>
+          <a className={styles.deploy} href={deploy} target="_blank" rel="noreferrer">
+            Deploy
+          </a>
+          <a className={styles.git} href={git} target="_blank" rel="noreferrer">
+            Git
+          </a>
+        </div>
+        {isAuth && (
+          <div className="MUI_icons">
+            <ModeIcon color="secondary" fontSize="medium" />
+            <DeleteForeverIcon color="error" fontSize="medium" />
+          </div>
+        )}
       </div>
     </div>
-  </div>
-));
+  ),
+);
 
 Card.propTypes = {
   img: PropTypes.string.isRequired,
@@ -101,6 +114,7 @@ Card.propTypes = {
   git: PropTypes.string.isRequired,
   deploy: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
+  isAuth: PropTypes.bool.isRequired,
 };
 
 export default Projects;

@@ -1,6 +1,13 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import ModeIcon from '@mui/icons-material/Mode';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useTranslation } from 'react-i18next';
+import { selectIsAuth } from '../../../redux/slices/auth';
 import styles from './Contact.module.scss';
 
 function Contact() {
@@ -9,26 +16,46 @@ function Contact() {
   const phone = contacts.items[0];
   const email = contacts.items[1];
   const telegram = contacts.items[2];
+  const isAuth = useSelector(selectIsAuth);
 
   return (
     <section className={styles.contact}>
       <div className="container">
         <div className={styles.container}>
           <div className={styles.content}>
+            {isAuth && <AddCircleIcon color="secondary" fontSize="large" />}
             <p className={styles.text}>{t('contacts_text')}</p>
             <div className={styles.phone}>
               {phone?.icon}
               <a href={`tel:${phone?.value}`}>+380(97)914-94-44</a>
+              {isAuth && (
+                <div className="MUI_icons">
+                  <ModeIcon color="secondary" fontSize="medium" />
+                  <DeleteForeverIcon color="error" fontSize="medium" />
+                </div>
+              )}
             </div>
             <div className={styles.telegram}>
               {telegram?.icon}
               <a href={telegram?.value} target="_blank" rel="noreferrer">
                 @Artem_Lira
               </a>
+              {isAuth && (
+                <div className="MUI_icons">
+                  <ModeIcon color="secondary" fontSize="medium" />
+                  <DeleteForeverIcon color="error" fontSize="medium" />
+                </div>
+              )}
             </div>
             <div className={styles.email}>
               {email?.icon}
               <a href={`mailto:${email?.value}`}>{email?.value}</a>
+              {isAuth && (
+                <div className="MUI_icons">
+                  <ModeIcon color="secondary" fontSize="medium" />
+                  <DeleteForeverIcon color="error" fontSize="medium" />
+                </div>
+              )}
             </div>
           </div>
           <form name="contact" method="POST" action="/contact" className={styles.form}>

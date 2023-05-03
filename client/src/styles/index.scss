@@ -85,3 +85,25 @@ body {
 .active-header {
   color: v.$white;
 }
+
+.wrapperTitle {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  &:not(:last-child) {
+    margin-bottom: 3rem;
+  }
+}
+
+.MUI_icons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  svg {
+    cursor: pointer;
+    transition: 0.3s ease;
+    &:hover {
+      transform: scale(1.5);
+    }
+  }
+}
