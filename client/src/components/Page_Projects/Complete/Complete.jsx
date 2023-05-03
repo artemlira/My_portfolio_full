@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Card } from '../../Page_Home/Projects/Projects';
@@ -27,7 +28,11 @@ function Complete() {
             <span>#</span>
             {t('complete_title')}
           </h2>
-          {isAuth && <AddCircleIcon color="secondary" fontSize="large" />}
+          {isAuth && (
+            <Link to="/add-project">
+              <AddCircleIcon color="secondary" fontSize="large" />
+            </Link>
+          )}
         </div>
         <div className={styles.container}>
           {completeApps?.map((project) => (

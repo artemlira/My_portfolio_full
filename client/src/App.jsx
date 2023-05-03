@@ -9,6 +9,7 @@ import About from './pages/About';
 import LoginPage from './components/LoginPage/LoginPage';
 import RegisterPage from './components/RegisterPage/RegisterPage';
 import { fetchAuthMe, selectIsAuth } from './redux/slices/auth';
+import AddProject from './components/AddProject/AddProject';
 
 function App() {
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ function App() {
         <Route path="contacts" element={<Contacts />} />
         <Route path="auth/login" element={<LoginPage />} />
         <Route path="auth/register" element={<RegisterPage />} />
+        <Route path="add-project" element={<AddProject />} />
       </Route>
     </Routes>
   );
