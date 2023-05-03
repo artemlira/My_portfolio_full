@@ -47,3 +47,22 @@ export const projectCreateValidation = [
   body('git', 'Неверная ссылка на контакт').isURL(),
   body('deploy', 'Неверная ссылка на контакт').isURL(),
 ];
+
+export const smallProjectCreateValidation = [
+  body('title', 'Введите название проекта').isLength({ min: 3 }).isString(),
+  body('skills', 'Введите массив используемых технологий').isArray(),
+  body('img', 'Неверная ссылка на изображение').isURL(),
+  body('imgWebp', 'Неверная ссылка на изображение webp').isURL(),
+  body('shortDescriptionUA', 'Введите краткое описание проекта').isLength({ min: 3 }).isString(),
+  body('shortDescriptionEN', 'Введите краткое описание проекта').isLength({ min: 3 }).isString(),
+  body('fullDescriptionUA', 'Введите полное описание проекта')
+    .optional()
+    .isLength({ min: 10 })
+    .isString(),
+  body('fullDescriptionEN', 'Введите полное описание проекта')
+    .optional()
+    .isLength({ min: 10 })
+    .isString(),
+  body('git', 'Неверная ссылка на контакт').isURL(),
+  body('deploy', 'Неверная ссылка на контакт').isURL(),
+];

@@ -1,13 +1,20 @@
-import React, { forwardRef, useContext } from 'react';
+import React, { forwardRef, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { MyContext } from '../../Context';
+import { fetchProjects } from '../../../redux/slices/projects';
 import styles from './Projects.module.scss';
 
 function Projects() {
   const { t, i18n } = useTranslation();
-  const { dataDB } = useContext(MyContext);
+  const dispatch = useDispatch();
+  const { projects } = useSelector((state) => state.projects);
+
+  useEffect(() => {
+    dispatch(fetchProjects());
+  }, [dispatch]);
+
   return (
     <section className={styles.projects}>
       <div className="container">
@@ -28,20 +35,25 @@ function Projects() {
             </div>
           </div>
           <div className={styles.cards}>
-            {dataDB?.projects?.completeApps.map((project, index) => (
-              index < 3 && (
-                <Card
-                  key={project.id}
-                  img={project.img}
-                  imgWebp={project.imgWebp}
-                  skills={project.skills}
-                  title={project.title}
-                  text={i18n.language === 'en' ? project.shortDescriptionEN : project.shortDescriptionUA}
-                  git={project.git}
-                  deploy={project.deploy}
-                />
-              )
-            ))}
+            {projects.items.map(
+              (project, index) => index < 3 && (
+              <Card
+                    // eslint-disable-next-line no-underscore-dangle
+                key={project._id}
+                img={project.img}
+                imgWebp={project.imgWebp}
+                skills={project.skills}
+                title={project.title}
+                text={
+                      i18n.language === 'en'
+                        ? project.shortDescriptionEN
+                        : project.shortDescriptionUA
+                    }
+                git={project.git}
+                deploy={project.deploy}
+              />
+              ),
+            )}
           </div>
         </div>
       </div>
@@ -49,9 +61,7 @@ function Projects() {
   );
 }
 
-export const Card = forwardRef(({
-  img, imgWebp, skills, title, text, git, deploy,
-}, ref) => (
+export const Card = forwardRef(({ img, imgWebp, skills, title, text, git, deploy }, ref) => (
   <div className={styles.card} ref={ref}>
     <div className={styles.cardImage}>
       <picture>
@@ -60,9 +70,9 @@ export const Card = forwardRef(({
       </picture>
     </div>
     <div className={styles.cardSkills}>
-      {
-        skills.map((skill) => <span key={skill}>{skill}</span>)
-      }
+      {skills.map((skill) => (
+        <span key={skill}>{skill}</span>
+      ))}
     </div>
     <div className={styles.content}>
       <div className={styles.cardTitle}>
@@ -72,8 +82,12 @@ export const Card = forwardRef(({
         <p>{text}</p>
       </div>
       <div className={styles.cardLinks}>
-        <a className={styles.deploy} href={deploy} target="_blank" rel="noreferrer">Deploy</a>
-        <a className={styles.git} href={git} target="_blank" rel="noreferrer">Git</a>
+        <a className={styles.deploy} href={deploy} target="_blank" rel="noreferrer">
+          Deploy
+        </a>
+        <a className={styles.git} href={git} target="_blank" rel="noreferrer">
+          Git
+        </a>
       </div>
     </div>
   </div>

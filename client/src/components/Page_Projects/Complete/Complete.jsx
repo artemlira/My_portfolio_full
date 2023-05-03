@@ -1,13 +1,21 @@
-import React, { useContext } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { MyContext } from '../../Context';
+import { useDispatch, useSelector } from 'react-redux';
 import { Card } from '../../Page_Home/Projects/Projects';
+import { fetchProjects } from '../../../redux/slices/projects';
 import styles from './Complete.module.scss';
 
 function Complete() {
   const { t, i18n } = useTranslation();
-  const { projects } = useContext(MyContext);
+  const dispatch = useDispatch();
+  const { projects } = useSelector((state) => state.projects);
+
+  useEffect(() => {
+    dispatch(fetchProjects());
+  }, [dispatch]);
+
+  const completeApps = projects.items;
   return (
     <section className={styles.complete}>
       <div className="container">
@@ -16,14 +24,17 @@ function Complete() {
           {t('complete_title')}
         </h2>
         <div className={styles.container}>
-          {projects?.completeApps.map((project) => (
+          {completeApps?.map((project) => (
             <Card
-              key={project.id}
+              // eslint-disable-next-line no-underscore-dangle
+              key={project._id}
               img={project.img}
               imgWebp={project.imgWebp}
               skills={project.skills}
               title={project.title}
-              text={i18n.language === 'en' ? project.shortDescriptionEN : project.shortDescriptionUA}
+              text={
+                i18n.language === 'en' ? project.shortDescriptionEN : project.shortDescriptionUA
+              }
               git={project.git}
               deploy={project.deploy}
             />

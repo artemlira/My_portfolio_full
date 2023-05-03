@@ -1,11 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { MyContext } from '../../Context';
 import styles from './Contacts.module.scss';
 
 function Contacts() {
   const { t } = useTranslation();
-  const { contacts } = useContext(MyContext);
+  const { contacts } = useSelector((state) => state.contacts);
+  const email = contacts.items[1];
+  const telegram = contacts.items[2];
   return (
     <section className={styles.contacts}>
       <div className="container">
@@ -15,16 +17,16 @@ function Contacts() {
         </h2>
         <div className={styles.container}>
           <div className={styles.content}>
-            <p className={styles.text}>
-              {t('contacts_text')}
-            </p>
+            <p className={styles.text}>{t('contacts_text')}</p>
             <div className={styles.telegram}>
-              {contacts && contacts[2].icon}
-              <a href={contacts && contacts[2].value} target="_blank" rel="noreferrer">@Artem_Lira</a>
+              {telegram?.icon}
+              <a href={telegram?.value} target="_blank" rel="noreferrer">
+                @Artem_Lira
+              </a>
             </div>
             <div className={styles.email}>
-              {contacts && contacts[1].icon}
-              <a href={`mailto:${contacts && contacts[1].value}`}>{contacts && contacts[1].value}</a>
+              {email?.icon}
+              <a href={`mailto:${email?.value}`}>{email?.value}</a>
             </div>
           </div>
           <form name="contact" method="POST" action="/contact" className={styles.form}>
@@ -59,7 +61,9 @@ function Contacts() {
               placeholder={t('contacts_message')}
               required
             />
-            <button type="submit" className={styles.button}>{t('contacts_button')}</button>
+            <button type="submit" className={styles.button}>
+              {t('contacts_button')}
+            </button>
           </form>
         </div>
       </div>

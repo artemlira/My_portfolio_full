@@ -11,6 +11,7 @@ import {
   contactCreateValidation,
   factCreateValidation,
   projectCreateValidation,
+  smallProjectCreateValidation,
 } from './validations.js';
 import {
   UserController,
@@ -19,6 +20,7 @@ import {
   ContactController,
   FactController,
   ProjectController,
+  SmallProjectController,
 } from './controllers/index.js';
 import { handleValidationErrors, checkAuth } from './utils/index.js';
 
@@ -139,6 +141,23 @@ app.patch(
   projectCreateValidation,
   handleValidationErrors,
   ProjectController.update,
+);
+
+app.get('/projects/small', SmallProjectController.getAll);
+app.post(
+  '/projects/small',
+  checkAuth,
+  smallProjectCreateValidation,
+  handleValidationErrors,
+  SmallProjectController.create,
+);
+app.delete('/projects/small/:id', checkAuth, SmallProjectController.remove);
+app.patch(
+  '/projects/small/:id',
+  checkAuth,
+  smallProjectCreateValidation,
+  handleValidationErrors,
+  SmallProjectController.update,
 );
 
 app.listen(PORT, (err) => {

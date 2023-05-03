@@ -1,30 +1,34 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { MyContext } from '../../Context';
 import styles from './Contact.module.scss';
 
 function Contact() {
   const { t } = useTranslation();
-  const { contacts } = useContext(MyContext);
+  const { contacts } = useSelector((state) => state.contacts);
+  const phone = contacts.items[0];
+  const email = contacts.items[1];
+  const telegram = contacts.items[2];
+
   return (
     <section className={styles.contact}>
       <div className="container">
         <div className={styles.container}>
           <div className={styles.content}>
-            <p className={styles.text}>
-              {t('contacts_text')}
-            </p>
+            <p className={styles.text}>{t('contacts_text')}</p>
             <div className={styles.phone}>
-              {contacts[0].icon}
-              <a href={`tel:${contacts[0].value}`}>+380(97)914-94-44</a>
+              {phone?.icon}
+              <a href={`tel:${phone?.value}`}>+380(97)914-94-44</a>
             </div>
             <div className={styles.telegram}>
-              {contacts[2].icon}
-              <a href={contacts[2].value} target="_blank" rel="noreferrer">@Artem_Lira</a>
+              {telegram?.icon}
+              <a href={telegram?.value} target="_blank" rel="noreferrer">
+                @Artem_Lira
+              </a>
             </div>
             <div className={styles.email}>
-              {contacts[1].icon}
-              <a href={`mailto:${contacts[1].value}`}>{contacts[1].value}</a>
+              {email?.icon}
+              <a href={`mailto:${email?.value}`}>{email?.value}</a>
             </div>
           </div>
           <form name="contact" method="POST" action="/contact" className={styles.form}>
@@ -59,7 +63,9 @@ function Contact() {
               placeholder={t('contacts_message')}
               required
             />
-            <button type="submit" className={styles.button}>{t('contacts_button')}</button>
+            <button type="submit" className={styles.button}>
+              {t('contacts_button')}
+            </button>
           </form>
         </div>
       </div>
