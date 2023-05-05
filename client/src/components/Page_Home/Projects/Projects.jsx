@@ -2,9 +2,7 @@ import React, { forwardRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import ModeIcon from '@mui/icons-material/Mode';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { Link } from 'react-router-dom';
 import { fetchProjects } from '../../../redux/slices/projects';
@@ -33,31 +31,36 @@ function Projects() {
             <div className={styles.link}>
               <Link to="projects">
                 {t('projects_link')}
-                {' '}
                 ~~&gt;
               </Link>
             </div>
           </div>
           <div className={styles.cards}>
             {projects.items.map(
-              (project, index) => index < 3 && (
-              <Card
+              (project, index) =>
+                // eslint-disable-next-line implicit-arrow-linebreak
+                index < 3 && (
+                  <Card
                     // eslint-disable-next-line no-underscore-dangle
-                key={project._id}
-                img={project.img}
-                imgWebp={project.imgWebp}
-                skills={project.skills}
-                title={project.title}
-                text={
+                    key={project._id}
+                    img={project.img}
+                    imgWebp={project.imgWebp}
+                    skills={project.skills}
+                    title={project.title}
+                    text={
                       i18n.language === 'en'
                         ? project.shortDescriptionEN
                         : project.shortDescriptionUA
                     }
-                git={project.git}
-                deploy={project.deploy}
-                isAuth={false}
-              />
-              ),
+                    git={project.git}
+                    deploy={project.deploy}
+                    isAuth={false}
+                    onClickChange={() => {}}
+                    onClickRemove={() => {}}
+                    // eslint-disable-next-line no-underscore-dangle
+                    id={project._id}
+                  />
+                ),
             )}
           </div>
         </div>
@@ -67,7 +70,10 @@ function Projects() {
 }
 
 export const Card = forwardRef(
-  ({ img, imgWebp, skills, title, text, git, deploy, isAuth }, ref) => (
+  (
+    { img, imgWebp, skills, title, text, git, deploy, isAuth, onClickRemove, onClickChange, id },
+    ref,
+  ) => (
     <div className={styles.card} ref={ref}>
       <div className={styles.cardImage}>
         <picture>
@@ -97,8 +103,14 @@ export const Card = forwardRef(
         </div>
         {isAuth && (
           <div className="MUI_icons">
-            <ModeIcon color="secondary" fontSize="medium" />
-            <DeleteForeverIcon color="error" fontSize="medium" />
+            <Link to={`${id}/edit`}>
+              <ModeIcon onClick={() => onClickChange()} color="secondary" fontSize="medium" />
+            </Link>
+            <DeleteForeverIcon
+              onClick={() => onClickRemove({ id })}
+              color="error"
+              fontSize="medium"
+            />
           </div>
         )}
       </div>
@@ -108,6 +120,7 @@ export const Card = forwardRef(
 
 Card.propTypes = {
   img: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
   imgWebp: PropTypes.string.isRequired,
   skills: PropTypes.arrayOf(PropTypes.string).isRequired,
   title: PropTypes.string.isRequired,
@@ -115,6 +128,8 @@ Card.propTypes = {
   deploy: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
   isAuth: PropTypes.bool.isRequired,
+  onClickRemove: PropTypes.func.isRequired,
+  onClickChange: PropTypes.func.isRequired,
 };
 
 export default Projects;

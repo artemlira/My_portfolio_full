@@ -135,6 +135,7 @@ app.post(
   ProjectController.create,
 );
 app.delete('/projects/:id', checkAuth, ProjectController.remove);
+app.get('/projects/:id', checkAuth, ProjectController.getOne);
 app.patch(
   '/projects/:id',
   checkAuth,
@@ -143,17 +144,18 @@ app.patch(
   ProjectController.update,
 );
 
-app.get('/projects/small', SmallProjectController.getAll);
+app.get('/small', SmallProjectController.getAll);
 app.post(
-  '/projects/small',
+  '/small',
   checkAuth,
   smallProjectCreateValidation,
   handleValidationErrors,
   SmallProjectController.create,
 );
-app.delete('/projects/small/:id', checkAuth, SmallProjectController.remove);
+app.delete('/small/:id', checkAuth, SmallProjectController.remove);
+app.get('/small/:id', checkAuth, SmallProjectController.getOne);
 app.patch(
-  '/projects/small/:id',
+  '/small/:id',
   checkAuth,
   smallProjectCreateValidation,
   handleValidationErrors,

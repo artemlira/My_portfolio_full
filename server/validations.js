@@ -21,13 +21,13 @@ export const skillCreateValidation = [
 export const mediaCreateValidation = [
   body('name', 'Введите имя соц. сети').isLength({ min: 3 }).isString(),
   body('link', 'Неверная ссылка на соц. сеть').isURL(),
-  body('icon', 'Неверная ссылка на иконку').isURL(),
+  body('icon', 'Неверная ссылка на иконку').isString(),
 ];
 
 export const contactCreateValidation = [
   body('name', 'Введите название контакта').isLength({ min: 3 }).isString(),
   body('value', 'Неверное значене контакта').isLength({ min: 3 }).isString(),
-  body('icon', 'Неверная ссылка на контакт').isURL(),
+  body('icon', 'Неверная ссылка на контакт').isString(),
 ];
 
 export const factCreateValidation = [
@@ -55,14 +55,8 @@ export const smallProjectCreateValidation = [
   body('imgWebp', 'Неверная ссылка на изображение webp').isString(),
   body('shortDescriptionUA', 'Введите краткое описание проекта').isLength({ min: 3 }).isString(),
   body('shortDescriptionEN', 'Введите краткое описание проекта').isLength({ min: 3 }).isString(),
-  body('fullDescriptionUA', 'Введите полное описание проекта')
-    .optional()
-    .isLength({ min: 10 })
-    .isString(),
-  body('fullDescriptionEN', 'Введите полное описание проекта')
-    .optional()
-    .isLength({ min: 10 })
-    .isString(),
+  body('fullDescriptionUA', 'Введите полное описание проекта').isLength({ min: 10 }).isString(),
+  body('fullDescriptionEN', 'Введите полное описание проекта').isLength({ min: 10 }).isString(),
   body('git', 'Неверная ссылка на контакт').isURL(),
   body('deploy', 'Неверная ссылка на контакт').isURL(),
 ];

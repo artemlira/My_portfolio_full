@@ -2,9 +2,17 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../utils/axios';
 
 export const fetchSmallProjects = createAsyncThunk('smallProjects/fetchSmallProjects', async () => {
-  const { data } = await axios.get('/projects/small');
+  const { data } = await axios.get('/small');
   return data;
 });
+
+export const fetchRemoveSmallProject = createAsyncThunk(
+  'smallProjects/fetchRemoveSmallProject',
+  async (id) => {
+    const { data } = await axios.delete(`/small/${id}`);
+    return data;
+  },
+);
 
 const initialState = {
   smallProjects: {
@@ -29,6 +37,13 @@ const smallProjectsSlice = createSlice({
     [fetchSmallProjects.rejected]: (state) => {
       state.smallProjects.items = [];
       state.smallProjects.status = 'error';
+    },
+    // project deletion
+    [fetchRemoveSmallProject.pending]: (state, action) => {
+      state.smallProjects.items = state.smallProjects.items.filter(
+        // eslint-disable-next-line no-underscore-dangle
+        (obj) => obj._id !== action.meta.arg,
+      );
     },
   },
 });

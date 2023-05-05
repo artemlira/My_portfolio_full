@@ -2,10 +2,9 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Card } from '../../Page_Home/Projects/Projects';
-import { fetchProjects } from '../../../redux/slices/projects';
+import { fetchProjects, fetchRemoveProject } from '../../../redux/slices/projects';
 import { selectIsAuth } from '../../../redux/slices/auth';
 import styles from './Complete.module.scss';
 
@@ -18,6 +17,15 @@ function Complete() {
   useEffect(() => {
     dispatch(fetchProjects());
   }, [dispatch]);
+
+  const onClickRemove = (data) => {
+    const { id } = data;
+    dispatch(fetchRemoveProject(id));
+  };
+
+  const onClickChange = () => {
+    dispatch();
+  };
 
   const completeApps = projects.items;
   return (
@@ -49,6 +57,10 @@ function Complete() {
               git={project.git}
               deploy={project.deploy}
               isAuth={isAuth}
+              onClickChange={onClickChange}
+              onClickRemove={onClickRemove}
+              // eslint-disable-next-line no-underscore-dangle
+              id={project._id}
             />
           ))}
         </div>

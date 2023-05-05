@@ -1,15 +1,25 @@
-import React, { useRef, useState } from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
+import React, { useRef, useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useParams } from 'react-router';
 import axios from '../../utils/axios';
 import styles from './AddProject.module.scss';
 
 function AddProject() {
+  const { id } = useParams();
   const inputFileRef = useRef(null);
   const inputFileWebpRef = useRef(null);
   const [imageUrl, setImageURL] = useState('');
   const [imageUrlWebp, setImageURLWebp] = useState('');
-  // const [isLoading, setLoading] = useState(false);
+  const [title, setTitle] = useState(null);
+  const [skills, setSkills] = useState(null);
+  const [shortDescriptionUA, setShortDescriptionUA] = useState(null);
+  const [shortDescriptionEN, setShortDescriptionEN] = useState(null);
+  const [fullDescriptionUA, setFullDescriptionUA] = useState(null);
+  const [fullDescriptionEN, setFullDescriptionEN] = useState(null);
+  const [git, setGit] = useState(null);
+  const [deploy, setDeploy] = useState(null);
+  const [img, setImg] = useState(null);
+  const [imgWebp, setImgWebp] = useState(null);
 
   const {
     register,
@@ -31,14 +41,32 @@ function AddProject() {
     mode: 'onChange',
   });
 
+  useEffect(() => {
+    if (id) {
+      axios.get(`/projects/${id}`).then((res) => {
+        setTitle(res.data.title);
+        setSkills(res.data.skills);
+        setShortDescriptionUA(res.data.shortDescriptionUA);
+        setShortDescriptionEN(res.data.shortDescriptionEN);
+        setFullDescriptionUA(res.data.fullDescriptionUA);
+        setFullDescriptionEN(res.data.fullDescriptionEN);
+        setGit(res.data.git);
+        setDeploy(res.data.deploy);
+        setImg(res.data.img);
+        setImgWebp(res.data.imgWebp);
+      });
+    }
+  }, [id]);
+
   const onSubmit = async (values) => {
     try {
-      // setLoading(true);
-      console.log(values);
       const skillsArray = values.skills.split(',');
       const data = { ...values, img: imageUrl, imgWebp: imageUrlWebp, skills: skillsArray };
-      console.log(data);
-      await axios.post('/projects', data);
+      if (id) {
+        await axios.patch(`/projects/${id}`, data);
+      } else {
+        await axios.post('/projects', data);
+      }
     } catch (error) {
       // eslint-disable-next-line no-console
       console.warn(error);
@@ -78,20 +106,25 @@ function AddProject() {
       <div className="container">
         <form className={styles.form} action="/" onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.images}>
-            {/* <button
+            <button
               className={styles.addImg}
               onClick={() => inputFileRef.current.click()}
               type="button"
             >
               Загрузить картинку img
-            </button> */}
-            <input
-              ref={inputFileRef}
-              type="file"
-              onChange={handleChangeFile}
-              // eslint-disable-next-line react/jsx-props-no-spreading
-              // {...register('img', { required: 'Укажите img' })}
-            />
+            </button>
+            <input ref={inputFileRef} type="file" onChange={handleChangeFile} hidden />
+
+            <button
+              className={styles.addImg}
+              onClick={() => inputFileWebpRef.current.click()}
+              type="button"
+            >
+              Загрузить картинку webp
+            </button>
+            <input ref={inputFileWebpRef} type="file" onChange={handleChangeFileWebp} hidden />
+          </div>
+          <div className={styles.wrapperImages}>
             {imageUrl && (
               <img
                 className={styles.mini}
@@ -99,25 +132,25 @@ function AddProject() {
                 alt={imageUrl}
               />
             )}
-            {/* <button
-              className={styles.addImg}
-              onClick={() => inputFileWebpRef.current.click()}
-              type="button"
-            >
-              Загрузить картинку webp
-            </button> */}
-            <input
-              ref={inputFileWebpRef}
-              type="file"
-              onChange={handleChangeFileWebp}
-              // eslint-disable-next-line react/jsx-props-no-spreading
-              // {...register('imgWebp', { required: 'Укажите imgWebp' })}
-            />
+            {id && (
+              <img
+                className={styles.mini}
+                src={`http://localhost:4444${img}`}
+                alt={img}
+              />
+            )}
             {imageUrlWebp && (
               <img
                 className={styles.mini}
                 src={`http://localhost:4444${imageUrlWebp}`}
                 alt={imageUrlWebp}
+              />
+            )}
+            {id && (
+              <img
+                className={styles.mini}
+                src={`http://localhost:4444${imgWebp}`}
+                alt={imgWebp}
               />
             )}
           </div>
@@ -128,6 +161,8 @@ function AddProject() {
                 type="text"
                 id="title"
                 placeholder="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
                 // eslint-disable-next-line react/jsx-props-no-spreading
                 {...register('title', { required: 'Укажите почту' })}
               />
@@ -139,8 +174,10 @@ function AddProject() {
               skills
               <input
                 type="text"
-                id="skills"
-                placeholder="skills" // eslint-disable-next-line react/jsx-props-no-spreading
+                placeholder="skills"
+                value={skills}
+                onChange={(e) => setSkills(e.target.value)}
+                id="skills" // eslint-disable-next-line react/jsx-props-no-spreading
                 {...register('skills', { required: 'Укажите Имя' })}
               />
               {errors.skills?.message}
@@ -153,6 +190,8 @@ function AddProject() {
                 type="text"
                 id="shortDescriptionUA"
                 placeholder="shortDescriptionUA"
+                value={shortDescriptionUA}
+                onChange={(e) => setShortDescriptionUA(e.target.value)}
                 // eslint-disable-next-line react/jsx-props-no-spreading
                 {...register('shortDescriptionUA', { required: 'Укажите shortDescriptionUA' })}
               />
@@ -164,8 +203,10 @@ function AddProject() {
               shortDescriptionEN
               <input
                 type="text"
-                id="shortDescriptionEN"
                 placeholder="shortDescriptionEN"
+                value={shortDescriptionEN}
+                onChange={(e) => setShortDescriptionEN(e.target.value)}
+                id="shortDescriptionEN"
                 // eslint-disable-next-line react/jsx-props-no-spreading
                 {...register('shortDescriptionEN', { required: 'Укажите shortDescriptionEN' })}
               />
@@ -179,6 +220,8 @@ function AddProject() {
                 type="text"
                 id="fullDescriptionUA"
                 placeholder="fullDescriptionUA"
+                value={fullDescriptionUA}
+                onChange={(e) => setFullDescriptionUA(e.target.value)}
                 // eslint-disable-next-line react/jsx-props-no-spreading
                 {...register('fullDescriptionUA', { required: 'Укажите fullDescriptionUA' })}
               />
@@ -192,6 +235,8 @@ function AddProject() {
                 type="text"
                 id="fullDescriptionEN"
                 placeholder="fullDescriptionEN"
+                value={fullDescriptionEN}
+                onChange={(e) => setFullDescriptionEN(e.target.value)}
                 // eslint-disable-next-line react/jsx-props-no-spreading
                 {...register('fullDescriptionEN', { required: 'Укажите fullDescriptionEN' })}
               />
@@ -205,6 +250,8 @@ function AddProject() {
                 type="text"
                 id="git"
                 placeholder="git"
+                value={git}
+                onChange={(e) => setGit(e.target.value)}
                 // eslint-disable-next-line react/jsx-props-no-spreading
                 {...register('git', { required: 'Укажите git' })}
               />
@@ -218,6 +265,8 @@ function AddProject() {
                 type="text"
                 id="deploy"
                 placeholder="deploy"
+                value={deploy}
+                onChange={(e) => setDeploy(e.target.value)}
                 // eslint-disable-next-line react/jsx-props-no-spreading
                 {...register('deploy', { required: 'Укажите deploy' })}
               />
@@ -225,7 +274,7 @@ function AddProject() {
             </label>
           </div>
           <button type="submit" className={styles.btn} disabled={!isValid}>
-            Добавить
+            {!id ? 'Добавить' : 'Сохранить'}
           </button>
         </form>
       </div>

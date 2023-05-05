@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Card } from '../../Page_Home/Projects/Projects';
-import { fetchSmallProjects } from '../../../redux/slices/smallProjects';
+import { fetchRemoveSmallProject, fetchSmallProjects } from '../../../redux/slices/smallProjects';
 import { selectIsAuth } from '../../../redux/slices/auth';
 import styles from './Small.module.scss';
 
@@ -17,6 +16,15 @@ function Small() {
   useEffect(() => {
     dispatch(fetchSmallProjects());
   }, [dispatch]);
+
+  const onClickRemove = (data) => {
+    const { id } = data;
+    dispatch(fetchRemoveSmallProject(id));
+  };
+
+  const onClickChange = () => {
+    dispatch();
+  };
 
   const projects = smallProjects.items;
 
@@ -45,6 +53,10 @@ function Small() {
               git={project.git}
               deploy={project.deploy}
               isAuth={isAuth}
+              onClickChange={onClickChange}
+              onClickRemove={onClickRemove}
+              // eslint-disable-next-line no-underscore-dangle
+              id={project._id}
             />
           ))}
         </div>

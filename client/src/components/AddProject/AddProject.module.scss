@@ -2,12 +2,6 @@
 @use '../../styles/mixins.scss' as m;
 @use '../../styles/functions.scss' as f;
 
-// .addProject {
-// }
-
-// .container {
-// }
-
 .form {
   display: flex;
   flex-direction: column;
@@ -22,7 +16,8 @@
   flex-wrap: wrap;
 }
 
-.addImg {
+.addImg,
+.btn {
   padding: 8px 12px;
   border: 1px solid wheat;
   border-radius: 7px;
@@ -53,8 +48,13 @@
   }
 }
 
-.mini{
+.mini {
   width: 200px;
   height: 200px;
   overflow: hidden;
+}
+
+.wrapperImages {
+  display: flex;
+  gap: 15px;
 }

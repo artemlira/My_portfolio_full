@@ -7,7 +7,7 @@ export const getAll = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({
-      message: 'Не удалось получить проекты'
+      message: 'Не удалось получить проекты',
     });
   }
 };
@@ -25,15 +25,15 @@ export const create = async (req, res) => {
       fullDescriptionEN: req.body.fullDescriptionEN,
       git: req.body.git,
       deploy: req.body.deploy,
-      user: req.userId
+      user: req.userId,
     });
 
     const project = await doc.save();
-    res.json(project)
+    res.json(project);
   } catch (err) {
     console.log(err);
     res.status(500).json({
-      message: 'Не удалось добавить проект'
+      message: 'Не удалось добавить проект',
     });
   }
 };
@@ -43,15 +43,30 @@ export const remove = async (req, res) => {
     const projectId = req.params.id;
 
     await ProjectModel.findOneAndDelete({
-      _id: projectId
+      _id: projectId,
     });
     res.json({
       message: 'Проект успешно удален',
-    })
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json({
-      message: 'Не удалось удалить проект'
+      message: 'Не удалось удалить проект',
+    });
+  }
+};
+
+export const getOne = async (req, res) => {
+  try {
+    const projectId = req.params.id;
+    const project = await ProjectModel.findById({
+      _id: projectId,
+    });
+    res.json(project);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: 'Не удалось получить full проект',
     });
   }
 };
@@ -59,9 +74,10 @@ export const remove = async (req, res) => {
 export const update = async (req, res) => {
   try {
     const projectId = req.params.id;
-    await ProjectModel.updateOne({
-      _id: projectId
-    },
+    await ProjectModel.updateOne(
+      {
+        _id: projectId,
+      },
       {
         title: req.body.title,
         skills: req.body.skills,
@@ -73,15 +89,16 @@ export const update = async (req, res) => {
         fullDescriptionEN: req.body.fullDescriptionEN,
         git: req.body.git,
         deploy: req.body.deploy,
-        user: req.userId
-      });
+        user: req.userId,
+      },
+    );
     res.json({
       message: 'Проект успешно обнавлен',
     });
   } catch (err) {
     console.log(err);
     res.status(500).json({
-      message: 'Не удалось обновить проекты'
+      message: 'Не удалось обновить проекты',
     });
   }
 };
