@@ -55,10 +55,10 @@ function Projects() {
                     git={project.git}
                     deploy={project.deploy}
                     isAuth={false}
-                    onClickChange={() => {}}
                     onClickRemove={() => {}}
                     // eslint-disable-next-line no-underscore-dangle
                     id={project._id}
+                    small={false}
                   />
                 ),
             )}
@@ -70,20 +70,20 @@ function Projects() {
 }
 
 export const Card = forwardRef(
-  (
-    { img, imgWebp, skills, title, text, git, deploy, isAuth, onClickRemove, onClickChange, id },
-    ref,
-  ) => (
+  ({ img, imgWebp, skills, title, text, git, deploy, isAuth, onClickRemove, id, small }, ref) => (
     <div className={styles.card} ref={ref}>
       <div className={styles.cardImage}>
         <picture>
           <source srcSet={`http://localhost:4444${imgWebp}`} type="image/webp" />
-          <img src={`http://localhost:4444${img}`} alt="njklk" />
+          <img src={`http://localhost:4444${img}`} alt={title} />
         </picture>
       </div>
       <div className={styles.cardSkills}>
         {skills.map((skill) => (
-          <span key={skill}>{skill}</span>
+          <p key={skill}>
+            <span>#</span>
+            {skill}
+          </p>
         ))}
       </div>
       <div className={styles.content}>
@@ -103,8 +103,8 @@ export const Card = forwardRef(
         </div>
         {isAuth && (
           <div className="MUI_icons">
-            <Link to={`${id}/edit`}>
-              <ModeIcon onClick={() => onClickChange()} color="secondary" fontSize="medium" />
+            <Link to={small ? `/small/${id}/edit` : `${id}/edit`}>
+              <ModeIcon color="secondary" fontSize="medium" />
             </Link>
             <DeleteForeverIcon
               onClick={() => onClickRemove({ id })}
@@ -128,8 +128,8 @@ Card.propTypes = {
   deploy: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
   isAuth: PropTypes.bool.isRequired,
+  small: PropTypes.bool.isRequired,
   onClickRemove: PropTypes.func.isRequired,
-  onClickChange: PropTypes.func.isRequired,
 };
 
 export default Projects;

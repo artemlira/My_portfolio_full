@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Card } from '../../Page_Home/Projects/Projects';
 import { fetchRemoveSmallProject, fetchSmallProjects } from '../../../redux/slices/smallProjects';
@@ -22,10 +23,6 @@ function Small() {
     dispatch(fetchRemoveSmallProject(id));
   };
 
-  const onClickChange = () => {
-    dispatch();
-  };
-
   const projects = smallProjects.items;
 
   return (
@@ -36,7 +33,11 @@ function Small() {
             <span>#</span>
             {t('small_title')}
           </h2>
-          {isAuth && <AddCircleIcon color="secondary" fontSize="large" />}
+          {isAuth && (
+            <Link to="/add-small">
+              <AddCircleIcon color="secondary" fontSize="large" />
+            </Link>
+          )}
         </div>
         <div className={styles.container}>
           {projects?.map((project) => (
@@ -53,10 +54,10 @@ function Small() {
               git={project.git}
               deploy={project.deploy}
               isAuth={isAuth}
-              onClickChange={onClickChange}
               onClickRemove={onClickRemove}
               // eslint-disable-next-line no-underscore-dangle
               id={project._id}
+              small
             />
           ))}
         </div>

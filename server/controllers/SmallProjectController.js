@@ -31,7 +31,7 @@ export const create = async (req, res) => {
   try {
     const doc = new SmallProjectModel({
       title: req.body.title,
-      skills: req.body.skills.split(','),
+      skills: req.body.skills,
       img: req.body.img,
       imgWebp: req.body.imgWebp,
       shortDescriptionUA: req.body.shortDescriptionUA,

@@ -23,10 +23,6 @@ function Complete() {
     dispatch(fetchRemoveProject(id));
   };
 
-  const onClickChange = () => {
-    dispatch();
-  };
-
   const completeApps = projects.items;
   return (
     <section className={styles.complete}>
@@ -57,10 +53,10 @@ function Complete() {
               git={project.git}
               deploy={project.deploy}
               isAuth={isAuth}
-              onClickChange={onClickChange}
               onClickRemove={onClickRemove}
               // eslint-disable-next-line no-underscore-dangle
               id={project._id}
+              small={false}
             />
           ))}
         </div>

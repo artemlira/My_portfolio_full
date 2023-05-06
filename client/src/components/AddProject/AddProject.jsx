@@ -42,7 +42,7 @@ function AddProject() {
         img,
         imgWebp,
         title,
-        skills: skills.split(','),
+        skills: skills.replace(/\s/g, '').split(','),
         shortDescriptionUA,
         shortDescriptionEN,
         fullDescriptionUA,
@@ -76,6 +76,7 @@ function AddProject() {
       alert('Ошибка при загрузке файла');
     }
   };
+
   const handleChangeFileWebp = async (event) => {
     try {
       const formData = new FormData();
@@ -90,6 +91,7 @@ function AddProject() {
       alert('Ошибка при загрузке файла');
     }
   };
+
   return (
     <section className={styles.addProject}>
       <div className="container">
