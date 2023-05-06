@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { useParams } from 'react-router';
+import { useParams, useNavigate } from 'react-router';
 import axios from '../../utils/axios';
 import styles from './AddProject.module.scss';
 
@@ -8,8 +7,8 @@ function AddProject() {
   const { id } = useParams();
   const inputFileRef = useRef(null);
   const inputFileWebpRef = useRef(null);
-  const [imageUrl, setImageURL] = useState('');
-  const [imageUrlWebp, setImageURLWebp] = useState('');
+  const [img, setImg] = useState('');
+  const [imgWebp, setImgWebp] = useState('');
   const [title, setTitle] = useState(null);
   const [skills, setSkills] = useState(null);
   const [shortDescriptionUA, setShortDescriptionUA] = useState(null);
@@ -18,34 +17,13 @@ function AddProject() {
   const [fullDescriptionEN, setFullDescriptionEN] = useState(null);
   const [git, setGit] = useState(null);
   const [deploy, setDeploy] = useState(null);
-  const [img, setImg] = useState(null);
-  const [imgWebp, setImgWebp] = useState(null);
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm({
-    defaultValues: {
-      img: '',
-      imgWebp: '',
-      title: '',
-      skills: '',
-      shortDescriptionUA: '',
-      shortDescriptionEN: '',
-      fullDescriptionUA: '',
-      fullDescriptionEN: '',
-      git: '',
-      deploy: '',
-    },
-    mode: 'onChange',
-  });
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (id) {
       axios.get(`/projects/${id}`).then((res) => {
         setTitle(res.data.title);
-        setSkills(res.data.skills);
+        setSkills(res.data.skills.join(','));
         setShortDescriptionUA(res.data.shortDescriptionUA);
         setShortDescriptionEN(res.data.shortDescriptionEN);
         setFullDescriptionUA(res.data.fullDescriptionUA);
@@ -58,15 +36,26 @@ function AddProject() {
     }
   }, [id]);
 
-  const onSubmit = async (values) => {
+  const onSubmit = async () => {
     try {
-      const skillsArray = values.skills.split(',');
-      const data = { ...values, img: imageUrl, imgWebp: imageUrlWebp, skills: skillsArray };
+      const fields = {
+        img,
+        imgWebp,
+        title,
+        skills: skills.split(','),
+        shortDescriptionUA,
+        shortDescriptionEN,
+        fullDescriptionUA,
+        fullDescriptionEN,
+        git,
+        deploy,
+      };
       if (id) {
-        await axios.patch(`/projects/${id}`, data);
+        await axios.patch(`/projects/${id}`, fields);
       } else {
-        await axios.post('/projects', data);
+        await axios.post('/projects', fields);
       }
+      navigate('/projects');
     } catch (error) {
       // eslint-disable-next-line no-console
       console.warn(error);
@@ -79,7 +68,7 @@ function AddProject() {
       const file = event.target.files[0];
       formData.append('image', file);
       const { data } = await axios.post('/upload', formData);
-      setImageURL(data.url);
+      setImg(data.url);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.warn(error);
@@ -93,7 +82,7 @@ function AddProject() {
       const file = event.target.files[0];
       formData.append('image', file);
       const { data } = await axios.post('/upload', formData);
-      setImageURLWebp(data.url);
+      setImgWebp(data.url);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.warn(error);
@@ -104,7 +93,7 @@ function AddProject() {
   return (
     <section className={styles.addProject}>
       <div className="container">
-        <form className={styles.form} action="/" onSubmit={handleSubmit(onSubmit)}>
+        <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
           <div className={styles.images}>
             <button
               className={styles.addImg}
@@ -125,33 +114,9 @@ function AddProject() {
             <input ref={inputFileWebpRef} type="file" onChange={handleChangeFileWebp} hidden />
           </div>
           <div className={styles.wrapperImages}>
-            {imageUrl && (
-              <img
-                className={styles.mini}
-                src={`http://localhost:4444${imageUrl}`}
-                alt={imageUrl}
-              />
-            )}
-            {id && (
-              <img
-                className={styles.mini}
-                src={`http://localhost:4444${img}`}
-                alt={img}
-              />
-            )}
-            {imageUrlWebp && (
-              <img
-                className={styles.mini}
-                src={`http://localhost:4444${imageUrlWebp}`}
-                alt={imageUrlWebp}
-              />
-            )}
-            {id && (
-              <img
-                className={styles.mini}
-                src={`http://localhost:4444${imgWebp}`}
-                alt={imgWebp}
-              />
+            {img && <img className={styles.mini} src={`http://localhost:4444${img}`} alt={img} />}
+            {imgWebp && (
+              <img className={styles.mini} src={`http://localhost:4444${imgWebp}`} alt={imgWebp} />
             )}
           </div>
           <div className={styles.wrapperTitle}>
@@ -163,10 +128,7 @@ function AddProject() {
                 placeholder="title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                // eslint-disable-next-line react/jsx-props-no-spreading
-                {...register('title', { required: 'Укажите почту' })}
               />
-              {errors.title?.message}
             </label>
           </div>
           <div className={styles.wrapperSkills}>
@@ -177,10 +139,8 @@ function AddProject() {
                 placeholder="skills"
                 value={skills}
                 onChange={(e) => setSkills(e.target.value)}
-                id="skills" // eslint-disable-next-line react/jsx-props-no-spreading
-                {...register('skills', { required: 'Укажите Имя' })}
+                id="skills"
               />
-              {errors.skills?.message}
             </label>
           </div>
           <div className={styles.wrapperShortDescriptionUA}>
@@ -192,10 +152,7 @@ function AddProject() {
                 placeholder="shortDescriptionUA"
                 value={shortDescriptionUA}
                 onChange={(e) => setShortDescriptionUA(e.target.value)}
-                // eslint-disable-next-line react/jsx-props-no-spreading
-                {...register('shortDescriptionUA', { required: 'Укажите shortDescriptionUA' })}
               />
-              {errors.shortDescriptionUA?.message}
             </label>
           </div>
           <div className={styles.wrapperShortDescriptionEN}>
@@ -207,10 +164,7 @@ function AddProject() {
                 value={shortDescriptionEN}
                 onChange={(e) => setShortDescriptionEN(e.target.value)}
                 id="shortDescriptionEN"
-                // eslint-disable-next-line react/jsx-props-no-spreading
-                {...register('shortDescriptionEN', { required: 'Укажите shortDescriptionEN' })}
               />
-              {errors.shortDescriptionEN?.message}
             </label>
           </div>
           <div className={styles.wrapperFullDescriptionUA}>
@@ -222,10 +176,7 @@ function AddProject() {
                 placeholder="fullDescriptionUA"
                 value={fullDescriptionUA}
                 onChange={(e) => setFullDescriptionUA(e.target.value)}
-                // eslint-disable-next-line react/jsx-props-no-spreading
-                {...register('fullDescriptionUA', { required: 'Укажите fullDescriptionUA' })}
               />
-              {errors.fullDescriptionUA?.message}
             </label>
           </div>
           <div className={styles.wrapperFullDescriptionEN}>
@@ -237,10 +188,7 @@ function AddProject() {
                 placeholder="fullDescriptionEN"
                 value={fullDescriptionEN}
                 onChange={(e) => setFullDescriptionEN(e.target.value)}
-                // eslint-disable-next-line react/jsx-props-no-spreading
-                {...register('fullDescriptionEN', { required: 'Укажите fullDescriptionEN' })}
               />
-              {errors.fullDescriptionEN?.message}
             </label>
           </div>
           <div className={styles.wrapperGit}>
@@ -252,10 +200,7 @@ function AddProject() {
                 placeholder="git"
                 value={git}
                 onChange={(e) => setGit(e.target.value)}
-                // eslint-disable-next-line react/jsx-props-no-spreading
-                {...register('git', { required: 'Укажите git' })}
               />
-              {errors.git?.message}
             </label>
           </div>
           <div className={styles.wrapperDeploy}>
@@ -267,13 +212,10 @@ function AddProject() {
                 placeholder="deploy"
                 value={deploy}
                 onChange={(e) => setDeploy(e.target.value)}
-                // eslint-disable-next-line react/jsx-props-no-spreading
-                {...register('deploy', { required: 'Укажите deploy' })}
               />
-              {errors.deploy?.message}
             </label>
           </div>
-          <button type="submit" className={styles.btn} disabled={!isValid}>
+          <button type="submit" className={styles.btn} onClick={onSubmit}>
             {!id ? 'Добавить' : 'Сохранить'}
           </button>
         </form>
