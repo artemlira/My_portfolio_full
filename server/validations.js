@@ -31,8 +31,8 @@ export const contactCreateValidation = [
 ];
 
 export const factCreateValidation = [
-  body('valueUA', 'Введите массив фактов').isArray(),
-  body('valueEN', 'Введите массив фактов').isArray(),
+  body('valueUA', 'Введите массив фактов').isString(),
+  body('valueEN', 'Введите массив фактов').isString(),
 ];
 
 export const projectCreateValidation = [

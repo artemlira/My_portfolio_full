@@ -3,11 +3,11 @@ import mongoose from 'mongoose';
 const FactSchema = new mongoose.Schema(
   {
     valueEN: {
-      type: Array,
+      type: String,
       required: true,
     },
     valueUA: {
-      type: Array,
+      type: String,
       required: true,
     },
     user: {

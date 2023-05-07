@@ -14,6 +14,7 @@ import AddSmallProject from './components/AddSmallProject/AddSmallProject';
 import AddContact from './components/AddContact/AddContact';
 import AddMedia from './components/AddMedia/AddMedia';
 import AddSkill from './components/AddSkill/AddSkill';
+import AddFact from './components/AddFact/AddFact';
 
 function App() {
   const dispatch = useDispatch();
@@ -44,6 +45,8 @@ function App() {
         <Route path="medias/:id/edit" element={<AddMedia />} />
         <Route path="add-skill" element={<AddSkill />} />
         <Route path="skills/:id/edit" element={<AddSkill />} />
+        <Route path="add-fact" element={<AddFact />} />
+        <Route path="facts/:id/edit" element={<AddFact />} />
       </Route>
     </Routes>
   );

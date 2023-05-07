@@ -6,6 +6,11 @@ export const fetchFacts = createAsyncThunk('facts/fetchFacts', async () => {
   return data;
 });
 
+export const fetchRemoveFact = createAsyncThunk('facts/fetchRemoveFact', async (id) => {
+  const { data } = await axios.delete(`/facts/${id}`);
+  return data;
+});
+
 const initialState = {
   facts: {
     items: [],
@@ -29,6 +34,11 @@ const factsSlice = createSlice({
     [fetchFacts.rejected]: (state) => {
       state.facts.items = [];
       state.facts.status = 'error';
+    },
+    // skill deletion
+    [fetchRemoveFact.pending]: (state, action) => {
+      // eslint-disable-next-line no-underscore-dangle
+      state.facts.items = state.facts.items.filter((obj) => obj._id !== action.meta.arg);
     },
   },
 });
