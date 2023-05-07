@@ -73,6 +73,7 @@ app.post(
   SkillController.create,
 );
 app.delete('/skills/:id', checkAuth, SkillController.remove);
+app.get('/skills/:id', checkAuth, SkillController.getOne);
 app.patch(
   '/skills/:id',
   checkAuth,
@@ -90,6 +91,7 @@ app.post(
   MediaController.create,
 );
 app.delete('/medias/:id', checkAuth, MediaController.remove);
+app.get('/medias/:id', checkAuth, MediaController.getOne);
 app.patch(
   '/medias/:id',
   checkAuth,
@@ -107,6 +109,7 @@ app.post(
   ContactController.create,
 );
 app.delete('/contacts/:id', checkAuth, ContactController.remove);
+app.get('/contacts/:id', checkAuth, ContactController.getOne);
 app.patch(
   '/contacts/:id',
   checkAuth,
@@ -118,6 +121,7 @@ app.patch(
 app.get('/facts', FactController.getAll);
 app.post('/facts', checkAuth, factCreateValidation, handleValidationErrors, FactController.create);
 app.delete('/facts/:id', checkAuth, FactController.remove);
+app.get('/facts/:id', checkAuth, FactController.getOne);
 app.patch(
   '/facts/:id',
   checkAuth,

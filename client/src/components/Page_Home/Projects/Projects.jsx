@@ -103,7 +103,7 @@ export const Card = forwardRef(
         </div>
         {isAuth && (
           <div className="MUI_icons">
-            <Link to={small ? `/small/${id}/edit` : `${id}/edit`}>
+            <Link to={small ? `/smalls/${id}/edit` : `${id}/edit`}>
               <ModeIcon color="secondary" fontSize="medium" />
             </Link>
             <DeleteForeverIcon

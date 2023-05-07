@@ -12,6 +12,21 @@ export const getAll = async (req, res) => {
   }
 };
 
+export const getOne = async (req, res) => {
+  try {
+    const mediaId = req.params.id;
+    const media = await MediaModel.findById({
+      _id: mediaId,
+    });
+    res.json(media);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: 'Не удалось получить ONE соц. сеть',
+    });
+  }
+};
+
 export const create = async (req, res) => {
   try {
     const doc = new MediaModel({

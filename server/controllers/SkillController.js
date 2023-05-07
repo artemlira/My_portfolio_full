@@ -12,6 +12,21 @@ export const getAll = async (req, res) => {
   }
 };
 
+export const getOne = async (req, res) => {
+  try {
+    const skillId = req.params.id;
+    const skill = await SkillModel.findById({
+      _id: skillId,
+    });
+    res.json(skill);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: 'Не удалось получить ONE Skill',
+    });
+  }
+};
+
 export const create = async (req, res) => {
   try {
     const doc = new SkillModel({

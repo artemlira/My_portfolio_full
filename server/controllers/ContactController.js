@@ -12,6 +12,21 @@ export const getAll = async (req, res) => {
   }
 };
 
+export const getOne = async (req, res) => {
+  try {
+    const contactId = req.params.id;
+    const contact = await ContactModel.findById({
+      _id: contactId,
+    });
+    res.json(contact);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: 'Не удалось получить ONE контакт',
+    });
+  }
+};
+
 export const create = async (req, res) => {
   try {
     const doc = new ContactModel({

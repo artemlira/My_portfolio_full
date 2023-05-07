@@ -6,6 +6,11 @@ export const fetchSkills = createAsyncThunk('skills/fetchSkills', async () => {
   return data;
 });
 
+export const fetchRemoveSkill = createAsyncThunk('skills/fetchRemoveSkill', async (id) => {
+  const { data } = await axios.delete(`/skills/${id}`);
+  return data;
+});
+
 const initialState = {
   skills: {
     items: [],
@@ -29,6 +34,11 @@ const skillsSlice = createSlice({
     [fetchSkills.rejected]: (state) => {
       state.skills.items = [];
       state.skills.status = 'error';
+    },
+    // skill deletion
+    [fetchRemoveSkill.pending]: (state, action) => {
+      // eslint-disable-next-line no-underscore-dangle
+      state.skills.items = state.skills.items.filter((obj) => obj._id !== action.meta.arg);
     },
   },
 });

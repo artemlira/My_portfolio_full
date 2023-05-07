@@ -12,6 +12,21 @@ export const getAll = async (req, res) => {
   }
 };
 
+export const getOne = async (req, res) => {
+  try {
+    const factId = req.params.id;
+    const fact = await FactModel.findById({
+      _id: factId,
+    });
+    res.json(fact);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: 'Не удалось получить ONE факт',
+    });
+  }
+};
+
 export const create = async (req, res) => {
   try {
     const doc = new FactModel({
