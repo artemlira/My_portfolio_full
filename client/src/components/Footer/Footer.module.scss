@@ -18,7 +18,7 @@
     margin-bottom: 3rem;
   }
 
-  @media screen and (max-width:600px) {
+  @media screen and (max-width: 600px) {
     flex-direction: column;
     align-items: center;
     text-align: center;
@@ -30,6 +30,10 @@
   }
 }
 
+.wrapperContacts {
+  flex: 1 1 auto;
+}
+
 .contacts {
   display: flex;
   gap: 1.5rem;
@@ -39,7 +43,7 @@
     margin-bottom: 1rem;
   }
 
-  @media screen and (max-width:600px) {
+  @media screen and (max-width: 600px) {
     justify-content: center;
     flex-wrap: wrap;
   }
@@ -62,6 +66,13 @@
   }
 }
 
+.media {
+  flex: 0 0 125px;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+}
+
 .icons {
   display: flex;
   gap: 0.875rem;
@@ -73,16 +84,17 @@
     transition: all 0.3s;
 
     &:hover {
-      svg * {
-        fill: v.$white;
+      img {
+        transform: scale(1.3);
       }
     }
 
-    svg {
+    img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       fill: v.$grey;
+      transition: all 0.3s;
     }
   }
 }

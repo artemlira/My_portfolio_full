@@ -1,19 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import ModeIcon from '@mui/icons-material/Mode';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { selectIsAuth } from '../../../redux/slices/auth';
+import { fetchMedias, fetchRemoveMedia } from '../../../redux/slices/medias';
 import styles from './Media.module.scss';
 
 function Media() {
   const { t } = useTranslation();
   const { medias } = useSelector((state) => state.medias);
   const isAuth = useSelector(selectIsAuth);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchMedias());
+  }, [dispatch]);
+
+  const onClickRemove = (data) => {
+    dispatch(fetchRemoveMedia(data));
+  };
 
   return (
     <section className={styles.media}>
@@ -23,19 +31,33 @@ function Media() {
             <span>#</span>
             {t('media_title')}
           </h2>
-          {isAuth && <AddCircleIcon color="secondary" fontSize="large" />}
+          {isAuth && (
+            <Link to="/add-media">
+              <AddCircleIcon color="secondary" fontSize="large" />
+            </Link>
+          )}
         </div>
         <div className={styles.container}>
           {medias.items.map((item) => (
             <>
               <a key={item.link} href={item.link} target="_blank" rel="noreferrer">
-                {item.icon}
+                <img src={`http://localhost:4444${item.icon}`} alt={item.name} />
                 <p>{item.name}</p>
               </a>
               {isAuth && (
                 <div className="MUI_icons">
-                  <ModeIcon color="secondary" fontSize="medium" />
-                  <DeleteForeverIcon color="error" fontSize="medium" />
+                  <Link
+                    // eslint-disable-next-line no-underscore-dangle
+                    to={`/medias/${item._id}/edit`}
+                  >
+                    <ModeIcon color="secondary" fontSize="medium" />
+                  </Link>
+                  <DeleteForeverIcon
+                    // eslint-disable-next-line no-underscore-dangle
+                    onClick={() => onClickRemove(item._id)}
+                    color="error"
+                    fontSize="medium"
+                  />
                 </div>
               )}
             </>

@@ -36,7 +36,7 @@ function Footer() {
                 {medias.items?.map((item) => (
                   // eslint-disable-next-line no-underscore-dangle
                   <a key={item._id} href={item.link} target="_blank" rel="noreferrer">
-                    {item.icon}
+                    <img src={`http://localhost:4444${item.icon}`} alt={item.name} />
                   </a>
                 ))}
               </div>

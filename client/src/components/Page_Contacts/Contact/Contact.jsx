@@ -1,10 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import ModeIcon from '@mui/icons-material/Mode';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useTranslation } from 'react-i18next';
 import { selectIsAuth } from '../../../redux/slices/auth';

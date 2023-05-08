@@ -6,6 +6,11 @@ export const fetchMedias = createAsyncThunk('medias/fetchMedias', async () => {
   return data;
 });
 
+export const fetchRemoveMedia = createAsyncThunk('medias/fetchRemoveMedia', async (id) => {
+  const { data } = await axios.delete(`/medias/${id}`);
+  return data;
+});
+
 const initialState = {
   medias: {
     items: [],
@@ -29,6 +34,11 @@ const mediasSlice = createSlice({
     [fetchMedias.rejected]: (state) => {
       state.medias.items = [];
       state.medias.status = 'error';
+    },
+    // media deletion
+    [fetchRemoveMedia.pending]: (state, action) => {
+      // eslint-disable-next-line no-underscore-dangle
+      state.medias.items = state.medias.items.filter((obj) => obj._id !== action.meta.arg);
     },
   },
 });
