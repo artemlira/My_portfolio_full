@@ -5,6 +5,8 @@ import ModeIcon from '@mui/icons-material/Mode';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { decode } from 'js-base64';
 import { selectIsAuth } from '../../../redux/slices/auth';
 import { fetchMedias, fetchRemoveMedia } from '../../../redux/slices/medias';
 import styles from './Media.module.scss';
@@ -41,7 +43,11 @@ function Media() {
           {medias.items.map((item) => (
             <>
               <a key={item.link} href={item.link} target="_blank" rel="noreferrer">
-                <img src={`http://localhost:4444${item.icon}`} alt={item.name} />
+                <div
+                  className={styles.icon}
+                  // eslint-disable-next-line react/no-danger
+                  dangerouslySetInnerHTML={{ __html: decode(item.icon) }}
+                />
                 <p>{item.name}</p>
               </a>
               {isAuth && (

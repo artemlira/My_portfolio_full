@@ -1,5 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { decode, encode } from 'js-base64';
 import axios from '../../utils/axios';
 import styles from './AddMedia.module.scss';
 
@@ -8,7 +10,6 @@ function AddMedia() {
   const [name, setName] = useState(null);
   const [link, setLink] = useState(null);
   const [icon, setIcon] = useState(null);
-  const inputIconRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,7 +17,7 @@ function AddMedia() {
       axios.get(`/medias/${id}`).then((res) => {
         setName(res.data.name);
         setLink(res.data.link);
-        setIcon(res.data.icon);
+        setIcon(decode(res.data.icon));
       });
     }
   }, [id]);
@@ -26,7 +27,7 @@ function AddMedia() {
       const fields = {
         name,
         link,
-        icon,
+        icon: encode(icon),
       };
       if (id) {
         await axios.patch(`/medias/${id}`, fields);
@@ -40,40 +41,28 @@ function AddMedia() {
     }
   };
 
-  const handleChangeFile = async (event) => {
-    try {
-      const formData = new FormData();
-      const file = event.target.files[0];
-      formData.append('image', file);
-      const { data } = await axios.post('/upload', formData);
-      setIcon(data.url);
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.warn(error);
-      // eslint-disable-next-line no-alert
-      alert('Ошибка при загрузке иконки');
-    }
-  };
-
   return (
     <section className={styles.addMedia}>
       <div className="container">
         <div className={styles.container}>
           <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
-            <div className={styles.icon}>
-              <button
-                className={styles.addImg}
-                onClick={() => inputIconRef.current.click()}
-                type="button"
-              >
-                Загрузить иконку svg
-              </button>
-              <input ref={inputIconRef} type="file" onChange={handleChangeFile} hidden />
-            </div>
             <div className={styles.wrapperIcons}>
               {icon && (
-                <img className={styles.mini} src={`http://localhost:4444${icon}`} alt={icon} />
+                // eslint-disable-next-line react/no-danger
+                <div dangerouslySetInnerHTML={{ __html: icon }} />
               )}
+            </div>
+            <div className={styles.wrapperIcon}>
+              <label htmlFor="icon" className={styles.name}>
+                icon SVG
+                <input
+                  type="text"
+                  id="icon"
+                  placeholder="icon"
+                  value={icon}
+                  onChange={(e) => setIcon(e.target.value)}
+                />
+              </label>
             </div>
             <div className={styles.wrapperName}>
               <label htmlFor="name" className={styles.name}>

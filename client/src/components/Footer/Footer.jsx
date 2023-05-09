@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { decode } from 'js-base64';
 import LogoLira from '../LogoLira';
 import { fetchMedias } from '../../redux/slices/medias';
 import { fetchContacts } from '../../redux/slices/contacts';
@@ -10,7 +12,7 @@ function Footer() {
   const { medias } = useSelector((state) => state.medias);
   const { contacts } = useSelector((state) => state.contacts);
 
-  const email = contacts.items[1];
+  // const email = contacts.items[1];
 
   useEffect(() => {
     dispatch(fetchMedias());
@@ -24,9 +26,13 @@ function Footer() {
             <div className={styles.wrapperContacts}>
               <div className={styles.contacts}>
                 <LogoLira />
-                <a href={`mailto:${email?.value}`} className={styles.mail}>
-                  {email?.value}
-                </a>
+                {contacts.items.map(
+                  (item) => item.name === 'email' && (
+                  <a key={item.value} href={`mailto:${item.value}`} className={styles.mail}>
+                    {item.value}
+                  </a>
+                  ),
+                )}
               </div>
               <p className={styles.text}>Front-end developer</p>
             </div>
@@ -36,7 +42,11 @@ function Footer() {
                 {medias.items?.map((item) => (
                   // eslint-disable-next-line no-underscore-dangle
                   <a key={item._id} href={item.link} target="_blank" rel="noreferrer">
-                    <img src={`http://localhost:4444${item.icon}`} alt={item.name} />
+                    <div
+                      className={styles.icon}
+                      // eslint-disable-next-line react/no-danger
+                      dangerouslySetInnerHTML={{ __html: decode(item.icon) }}
+                    />
                   </a>
                 ))}
               </div>

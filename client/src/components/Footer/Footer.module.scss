@@ -84,12 +84,12 @@
     transition: all 0.3s;
 
     &:hover {
-      img {
-        transform: scale(1.3);
+      svg * {
+        fill: v.$white;
       }
     }
 
-    img {
+    svg {
       width: 100%;
       height: 100%;
       object-fit: cover;
