@@ -5,7 +5,6 @@ import ModeIcon from '@mui/icons-material/Mode';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { decode } from 'js-base64';
 import { selectIsAuth } from '../../../redux/slices/auth';
 import { fetchMedias, fetchRemoveMedia } from '../../../redux/slices/medias';

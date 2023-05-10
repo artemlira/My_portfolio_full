@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { decode } from 'js-base64';
 import LogoLira from '../LogoLira';
 import { fetchMedias } from '../../redux/slices/medias';
@@ -12,12 +11,11 @@ function Footer() {
   const { medias } = useSelector((state) => state.medias);
   const { contacts } = useSelector((state) => state.contacts);
 
-  // const email = contacts.items[1];
-
   useEffect(() => {
     dispatch(fetchMedias());
     dispatch(fetchContacts());
   }, [dispatch]);
+
   return (
     <footer className={styles.footer}>
       <div className="container">
@@ -27,7 +25,7 @@ function Footer() {
               <div className={styles.contacts}>
                 <LogoLira />
                 {contacts.items.map(
-                  (item) => item.name === 'email' && (
+                  (item) => item.name.toLowerCase() === 'email' && (
                   <a key={item.value} href={`mailto:${item.value}`} className={styles.mail}>
                     {item.value}
                   </a>

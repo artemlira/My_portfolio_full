@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { decode, encode } from 'js-base64';
 import axios from '../../utils/axios';
 import styles from './AddMedia.module.scss';

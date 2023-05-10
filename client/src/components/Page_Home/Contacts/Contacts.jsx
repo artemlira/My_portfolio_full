@@ -1,13 +1,18 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { atob } from 'js-base64';
+import { fetchContacts } from '../../../redux/slices/contacts';
 import styles from './Contacts.module.scss';
 
 function Contacts() {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const { contacts } = useSelector((state) => state.contacts);
-  const email = contacts.items[1];
-  const telegram = contacts.items[2];
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
   return (
     <section className={styles.contacts}>
       <div className="container">
@@ -18,16 +23,30 @@ function Contacts() {
         <div className={styles.container}>
           <div className={styles.content}>
             <p className={styles.text}>{t('contacts_text')}</p>
-            <div className={styles.telegram}>
-              {telegram?.icon}
-              <a href={telegram?.value} target="_blank" rel="noreferrer">
-                @Artem_Lira
-              </a>
-            </div>
-            <div className={styles.email}>
-              {email?.icon}
-              <a href={`mailto:${email?.value}`}>{email?.value}</a>
-            </div>
+            {contacts.items.map((item) => (
+              <>
+                {item.name.toLowerCase() === 'email' && (
+                  <a key={item.value} href={`mailto:${item?.value}`}>
+                    <div
+                      className={styles.icon}
+                      // eslint-disable-next-line react/no-danger
+                      dangerouslySetInnerHTML={{ __html: atob(item.icon) }}
+                    />
+                    {item?.value}
+                  </a>
+                )}
+                {item.name.toLowerCase() === 'telegram' && (
+                  <a key={item.value} href={item?.value} target="_blank" rel="noreferrer">
+                    <div
+                      className={styles.icon}
+                      // eslint-disable-next-line react/no-danger
+                      dangerouslySetInnerHTML={{ __html: atob(item.icon) }}
+                    />
+                    {item?.value}
+                  </a>
+                )}
+              </>
+            ))}
           </div>
           <form name="contact" method="POST" action="/contact" className={styles.form}>
             <input type="hidden" name="form-name" value="contact" />

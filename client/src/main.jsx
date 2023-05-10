@@ -1,8 +1,6 @@
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import Box from '@mui/material/Box';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import CircularProgress from '@mui/material/CircularProgress';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';

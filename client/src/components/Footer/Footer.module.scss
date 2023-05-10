@@ -13,6 +13,7 @@
 .content {
   display: flex;
   justify-content: space-between;
+  gap: 0.9375rem;
 
   &:not(:last-child) {
     margin-bottom: 3rem;
@@ -31,7 +32,7 @@
 }
 
 .wrapperContacts {
-  flex: 1 1 auto;
+  flex: 1 1 75%;
 }
 
 .contacts {
@@ -67,15 +68,24 @@
 }
 
 .media {
-  flex: 0 0 125px;
+  flex: 1 0 30%;
   display: flex;
   flex-direction: column;
-  justify-content: end;
+  align-items: end;
+  @media screen and (max-width: 600px) {
+    align-items: center;
+  }
 }
 
 .icons {
+  flex: 1 1 100%;
   display: flex;
   gap: 0.875rem;
+  flex-wrap: wrap;
+  justify-content: end;
+  @media screen and (max-width: 600px) {
+    justify-content: center;
+  }
 
   a {
     flex: 0 0 32px;

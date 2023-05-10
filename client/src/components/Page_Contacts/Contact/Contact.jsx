@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ModeIcon from '@mui/icons-material/Mode';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { atob } from 'js-base64';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -39,20 +38,39 @@ function Contact() {
             {contacts.items.map((item) => (
               <>
                 <div
-                  className={styles.phone}
+                  className={styles.values}
                   // eslint-disable-next-line no-underscore-dangle
                   key={item._id}
                 >
-                  <div
-                    className={styles.icon}
-                    // eslint-disable-next-line react/no-danger
-                    dangerouslySetInnerHTML={{ __html: atob(item.icon) }}
-                  />
-                  {`${item?.name} : `}
-                  {item.name === 'phone' && <a href={`tel:${item?.value}`}>{item?.value}</a>}
-                  {item.name === 'email' && <a href={`mailto:${item?.value}`}>{item?.value}</a>}
-                  {item.name !== 'email' && item.name !== 'phone' && (
-                    <a href={item?.value}>{item?.value}</a>
+                  {item.name.toLowerCase() === 'phone' && (
+                    <a href={`tel:${item?.value}`}>
+                      <div
+                        className={styles.icon}
+                        // eslint-disable-next-line react/no-danger
+                        dangerouslySetInnerHTML={{ __html: atob(item.icon) }}
+                      />
+                      {item?.value}
+                    </a>
+                  )}
+                  {item.name.toLowerCase() === 'email' && (
+                    <a href={`mailto:${item?.value}`}>
+                      <div
+                        className={styles.icon}
+                        // eslint-disable-next-line react/no-danger
+                        dangerouslySetInnerHTML={{ __html: atob(item.icon) }}
+                      />
+                      {item?.value}
+                    </a>
+                  )}
+                  {item.name.toLowerCase() !== 'email' && item.name.toLowerCase() !== 'phone' && (
+                    <a href={item?.value} target="_blank" rel="noreferrer">
+                      <div
+                        className={styles.icon}
+                        // eslint-disable-next-line react/no-danger
+                        dangerouslySetInnerHTML={{ __html: atob(item.icon) }}
+                      />
+                      {item?.value}
+                    </a>
                   )}
                 </div>
                 {isAuth && (

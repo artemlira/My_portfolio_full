@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import Projects from './pages/Projects';
@@ -8,7 +8,7 @@ import Contacts from './pages/Contacts';
 import About from './pages/About';
 import LoginPage from './components/LoginPage/LoginPage';
 import RegisterPage from './components/RegisterPage/RegisterPage';
-import { fetchAuthMe, selectIsAuth } from './redux/slices/auth';
+import { fetchAuthMe } from './redux/slices/auth';
 import AddProject from './components/AddProject/AddProject';
 import AddSmallProject from './components/AddSmallProject/AddSmallProject';
 import AddContact from './components/AddContact/AddContact';
@@ -18,14 +18,11 @@ import AddFact from './components/AddFact/AddFact';
 
 function App() {
   const dispatch = useDispatch();
-  const isAuth = useSelector(selectIsAuth);
-
-  // eslint-disable-next-line no-console
-  console.log(isAuth);
 
   useEffect(() => {
     dispatch(fetchAuthMe());
   }, [dispatch]);
+
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
