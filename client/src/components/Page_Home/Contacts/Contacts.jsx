@@ -24,7 +24,7 @@ function Contacts() {
           <div className={styles.content}>
             <p className={styles.text}>{t('contacts_text')}</p>
             {contacts.items.map((item) => (
-              <>
+              <div key={item.value}>
                 {item.name.toLowerCase() === 'email' && (
                   <a key={item.value} href={`mailto:${item?.value}`}>
                     <div
@@ -45,7 +45,7 @@ function Contacts() {
                     {item?.value}
                   </a>
                 )}
-              </>
+              </div>
             ))}
           </div>
           <form name="contact" method="POST" action="/contact" className={styles.form}>

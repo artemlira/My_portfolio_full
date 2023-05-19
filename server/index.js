@@ -28,8 +28,12 @@ import { handleValidationErrors, checkAuth } from './utils/index.js';
 const app = express();
 dotenv.config();
 
+const PORT = process.env.PORT || 4444;
+
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect(
+    'mongodb+srv://admin:wwwwww@cluster0.jcpn6xu.mongodb.net/portfolio?retryWrites=true&w=majority',
+  )
   .then(() => console.log('MongoDB OK'))
   .catch((err) => console.log('MongoDB error', err));
 
@@ -163,9 +167,9 @@ app.patch(
   SmallProjectController.update,
 );
 
-app.listen(process.env.PORT || 4444, (err) => {
+app.listen(PORT, (err) => {
   if (err) {
     return console.log(err);
   }
-  console.log('Server OK');
+  console.log(`Server OK in port ${PORT}`);
 });

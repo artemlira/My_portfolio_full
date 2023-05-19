@@ -116,9 +116,19 @@ function AddProject() {
             <input ref={inputFileWebpRef} type="file" onChange={handleChangeFileWebp} hidden />
           </div>
           <div className={styles.wrapperImages}>
-            {img && <img className={styles.mini} src={`http://localhost:4444${img}`} alt={img} />}
+            {img && (
+              <img
+                className={styles.mini}
+                src={`https://cerulean-ostrich-gear.cyclic.app${img}`}
+                alt={img}
+              />
+            )}
             {imgWebp && (
-              <img className={styles.mini} src={`http://localhost:4444${imgWebp}`} alt={imgWebp} />
+              <img
+                className={styles.mini}
+                src={`https://cerulean-ostrich-gear.cyclic.app${imgWebp}`}
+                alt={imgWebp}
+              />
             )}
           </div>
           <div className={styles.wrapperTitle}>

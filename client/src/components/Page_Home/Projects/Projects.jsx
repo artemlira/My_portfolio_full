@@ -74,8 +74,8 @@ export const Card = forwardRef(
     <div className={styles.card} ref={ref}>
       <div className={styles.cardImage}>
         <picture>
-          <source srcSet={`http://localhost:4444${imgWebp}`} type="image/webp" />
-          <img src={`http://localhost:4444${img}`} alt={title} />
+          <source srcSet={`https://cerulean-ostrich-gear.cyclic.app${imgWebp}`} type="image/webp" />
+          <img src={`https://cerulean-ostrich-gear.cyclic.app${img}`} alt={title} />
         </picture>
       </div>
       <div className={styles.cardSkills}>

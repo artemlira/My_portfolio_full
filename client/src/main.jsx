@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
-import Box from '@mui/material/Box';
+import { Box } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
