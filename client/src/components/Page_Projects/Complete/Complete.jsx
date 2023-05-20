@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { Box, Skeleton } from '@mui/material';
 import { Card } from '../../Page_Home/Projects/Projects';
 import { fetchProjects, fetchRemoveProject } from '../../../redux/slices/projects';
 import { selectIsAuth } from '../../../redux/slices/auth';
@@ -13,6 +14,7 @@ function Complete() {
   const dispatch = useDispatch();
   const { projects } = useSelector((state) => state.projects);
   const isAuth = useSelector(selectIsAuth);
+  const skiletons = [1, 2, 3];
 
   useEffect(() => {
     dispatch(fetchProjects());
@@ -39,26 +41,39 @@ function Complete() {
           )}
         </div>
         <div className={styles.container}>
-          {completeApps?.map((project) => (
-            <Card
+          {projects?.status === 'loading'
+            ? skiletons.map((item) => (
+              <Box sx={{ width: 300 }} key={item}>
+                <Skeleton variant="rectangular" width="100%" height={200} />
+                <Skeleton animation="wave" />
+                <Skeleton animation="wave" />
+                <Skeleton animation="wave" />
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Skeleton animation="wave" width={80} height={40} />
+                  <Skeleton animation="wave" width={80} height={40} />
+                </Box>
+              </Box>
+            ))
+            : completeApps?.map((project) => (
+              <Card
               // eslint-disable-next-line no-underscore-dangle
-              key={project._id}
-              img={project.img}
-              imgWebp={project.imgWebp}
-              skills={project.skills}
-              title={project.title}
-              text={
+                key={project._id}
+                img={project.img}
+                imgWebp={project.imgWebp}
+                skills={project.skills}
+                title={project.title}
+                text={
                 i18n.language === 'en' ? project.shortDescriptionEN : project.shortDescriptionUA
               }
-              git={project.git}
-              deploy={project.deploy}
-              isAuth={isAuth}
-              onClickRemove={onClickRemove}
+                git={project.git}
+                deploy={project.deploy}
+                isAuth={isAuth}
+                onClickRemove={onClickRemove}
               // eslint-disable-next-line no-underscore-dangle
-              id={project._id}
-              small={false}
-            />
-          ))}
+                id={project._id}
+                small={false}
+              />
+            ))}
         </div>
       </div>
     </section>

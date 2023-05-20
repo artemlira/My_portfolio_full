@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import ModeIcon from '@mui/icons-material/Mode';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { Box, Skeleton } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { fetchProjects } from '../../../redux/slices/projects';
 import styles from './Projects.module.scss';
@@ -12,6 +13,7 @@ function Projects() {
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const { projects } = useSelector((state) => state.projects);
+  const skiletons = [1, 2, 3];
 
   useEffect(() => {
     dispatch(fetchProjects());
@@ -36,32 +38,45 @@ function Projects() {
             </div>
           </div>
           <div className={styles.cards}>
-            {projects.items.map(
-              (project, index) =>
+            {projects?.status === 'loading'
+              ? skiletons.map((item) => (
+                <Box sx={{ width: 300 }} key={item}>
+                  <Skeleton variant="rectangular" width="100%" height={200} />
+                  <Skeleton animation="wave" />
+                  <Skeleton animation="wave" />
+                  <Skeleton animation="wave" />
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <Skeleton animation="wave" width={80} height={40} />
+                    <Skeleton animation="wave" width={80} height={40} />
+                  </Box>
+                </Box>
+              ))
+              : projects.items.map(
+                (project, index) =>
                 // eslint-disable-next-line implicit-arrow-linebreak
-                index < 3 && (
+                  index < 3 && (
                   <Card
-                    // eslint-disable-next-line no-underscore-dangle
+                        // eslint-disable-next-line no-underscore-dangle
                     key={project._id}
                     img={project.img}
                     imgWebp={project.imgWebp}
                     skills={project.skills}
                     title={project.title}
                     text={
-                      i18n.language === 'en'
-                        ? project.shortDescriptionEN
-                        : project.shortDescriptionUA
-                    }
+                          i18n.language === 'en'
+                            ? project.shortDescriptionEN
+                            : project.shortDescriptionUA
+                        }
                     git={project.git}
                     deploy={project.deploy}
                     isAuth={false}
                     onClickRemove={() => {}}
-                    // eslint-disable-next-line no-underscore-dangle
+                        // eslint-disable-next-line no-underscore-dangle
                     id={project._id}
                     small={false}
                   />
-                ),
-            )}
+                  ),
+              )}
           </div>
         </div>
       </div>
