@@ -1,4 +1,6 @@
 import ProjectModel from '../models/Project.js';
+// import path, { dirname } from 'path';
+// import { fileURLToPath } from 'url';
 
 export const getAll = async (req, res) => {
   try {
@@ -11,6 +13,54 @@ export const getAll = async (req, res) => {
     });
   }
 };
+
+// export const create = async (req, res) => {
+//   try {
+//     if (req.files) {
+//       let fileName = req.files.image.name;
+//       const __dirname = dirname(fileURLToPath(import.meta.url));
+//       req.files.image.mv(path.join(__dirname, '..', 'uploads', fileName));
+
+//       const newProjectWithImage = new ProjectModel({
+//         title: req.body.title,
+//         skills: req.body.skills,
+//         img: fileName,
+//         // imgWebp: fileName,
+//         shortDescriptionUA: req.body.shortDescriptionUA,
+//         shortDescriptionEN: req.body.shortDescriptionEN,
+//         fullDescriptionUA: req.body.fullDescriptionUA,
+//         fullDescriptionEN: req.body.fullDescriptionEN,
+//         git: req.body.git,
+//         deploy: req.body.deploy,
+//         user: req.userId,
+//       });
+
+//       await newProjectWithImage.save();
+//       return res.json(newProjectWithImage);
+//     }
+
+//     const newProjectWithoutImage = new ProjectModel({
+//       title: req.body.title,
+//       skills: req.body.skills,
+//       img: '',
+//       // imgWebp: '',
+//       shortDescriptionUA: req.body.shortDescriptionUA,
+//       shortDescriptionEN: req.body.shortDescriptionEN,
+//       fullDescriptionUA: req.body.fullDescriptionUA,
+//       fullDescriptionEN: req.body.fullDescriptionEN,
+//       git: req.body.git,
+//       deploy: req.body.deploy,
+//       user: req.userId,
+//     });
+//     await newProjectWithoutImage.save();
+//     res.json(newProjectWithoutImage);
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({
+//       message: 'Не удалось добавить проект',
+//     });
+//   }
+// };
 
 export const create = async (req, res) => {
   try {

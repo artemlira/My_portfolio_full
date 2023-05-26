@@ -1,13 +1,13 @@
-import React, { forwardRef, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
-import { useTranslation } from 'react-i18next';
-import ModeIcon from '@mui/icons-material/Mode';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { Box, Skeleton } from '@mui/material';
-import { Link } from 'react-router-dom';
-import { fetchProjects } from '../../../redux/slices/projects';
-import styles from './Projects.module.scss';
+import React, { forwardRef, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
+import ModeIcon from "@mui/icons-material/Mode";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { Box, Skeleton } from "@mui/material";
+import { Link } from "react-router-dom";
+import { fetchProjects } from "../../../redux/slices/projects";
+import styles from "./Projects.module.scss";
 
 function Projects() {
   const { t, i18n } = useTranslation();
@@ -27,56 +27,61 @@ function Projects() {
             <div className={styles.title}>
               <h2>
                 <span>#</span>
-                {t('projects_title')}
+                {t("projects_title")}
               </h2>
             </div>
             <div className={styles.link}>
               <Link to="projects">
-                {t('projects_link')}
+                {t("projects_link")}
                 ~~&gt;
               </Link>
             </div>
           </div>
           <div className={styles.cards}>
-            {projects?.status === 'loading'
+            {projects?.status === "loading"
               ? skiletons.map((item) => (
-                <Box sx={{ width: 300 }} key={item}>
-                  <Skeleton variant="rectangular" width="100%" height={200} />
-                  <Skeleton animation="wave" />
-                  <Skeleton animation="wave" />
-                  <Skeleton animation="wave" />
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <Skeleton animation="wave" width={80} height={40} />
-                    <Skeleton animation="wave" width={80} height={40} />
+                  <Box sx={{ width: 300 }} key={item}>
+                    <Skeleton variant="rectangular" width="100%" height={200} />
+                    <Skeleton animation="wave" />
+                    <Skeleton animation="wave" />
+                    <Skeleton animation="wave" />
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Skeleton animation="wave" width={80} height={40} />
+                      <Skeleton animation="wave" width={80} height={40} />
+                    </Box>
                   </Box>
-                </Box>
-              ))
+                ))
               : projects.items.map(
-                (project, index) =>
-                // eslint-disable-next-line implicit-arrow-linebreak
-                  index < 3 && (
-                  <Card
+                  (project, index) =>
+                    index < 3 && (
+                      <Card
                         // eslint-disable-next-line no-underscore-dangle
-                    key={project._id}
-                    img={project.img}
-                    imgWebp={project.imgWebp}
-                    skills={project.skills}
-                    title={project.title}
-                    text={
-                          i18n.language === 'en'
+                        key={project._id}
+                        img={project.img}
+                        imgWebp={project.imgWebp}
+                        skills={project.skills}
+                        title={project.title}
+                        text={
+                          i18n.language === "en"
                             ? project.shortDescriptionEN
                             : project.shortDescriptionUA
                         }
-                    git={project.git}
-                    deploy={project.deploy}
-                    isAuth={false}
-                    onClickRemove={() => {}}
+                        git={project.git}
+                        deploy={project.deploy}
+                        isAuth={false}
+                        onClickRemove={() => {}}
                         // eslint-disable-next-line no-underscore-dangle
-                    id={project._id}
-                    small={false}
-                  />
-                  ),
-              )}
+                        id={project._id}
+                        small={false}
+                      />
+                    )
+                )}
           </div>
         </div>
       </div>
@@ -85,12 +90,35 @@ function Projects() {
 }
 
 export const Card = forwardRef(
-  ({ img, imgWebp, skills, title, text, git, deploy, isAuth, onClickRemove, id, small }, ref) => (
+  (
+    {
+      img,
+      imgWebp,
+      skills,
+      title,
+      text,
+      git,
+      deploy,
+      isAuth,
+      onClickRemove,
+      id,
+      small,
+    },
+    ref
+  ) => (
     <div className={styles.card} ref={ref}>
       <div className={styles.cardImage}>
         <picture>
-          <source srcSet={`https://cerulean-ostrich-gear.cyclic.app${imgWebp}`} type="image/webp" />
-          <img src={`https://cerulean-ostrich-gear.cyclic.app${img}`} alt={title} />
+          <source
+            // srcSet={`http://localhost:4444${imgWebp}`}
+            srcSet={`https://mern-portfolio-back.vercel.app${imgWebp}`}
+            type="image/webp"
+          />
+          {/* <img src={`http://localhost:4444${img}`} alt={title} /> */}
+          <img
+            src={`https://mern-portfolio-back.vercel.app${img}`}
+            alt={title}
+          />
         </picture>
       </div>
       <div className={styles.cardSkills}>
@@ -109,7 +137,12 @@ export const Card = forwardRef(
           <p>{text}</p>
         </div>
         <div className={styles.cardLinks}>
-          <a className={styles.deploy} href={deploy} target="_blank" rel="noreferrer">
+          <a
+            className={styles.deploy}
+            href={deploy}
+            target="_blank"
+            rel="noreferrer"
+          >
             Deploy
           </a>
           <a className={styles.git} href={git} target="_blank" rel="noreferrer">
@@ -130,7 +163,7 @@ export const Card = forwardRef(
         )}
       </div>
     </div>
-  ),
+  )
 );
 
 Card.propTypes = {
