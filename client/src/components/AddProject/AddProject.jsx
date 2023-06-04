@@ -39,8 +39,8 @@ function AddProject() {
   const onSubmit = async () => {
     try {
       const fields = {
-        img,
-        imgWebp,
+        base64: img,
+        base64Webp: imgWebp,
         title,
         skills: skills.replace(/\s/g, "").split(","),
         shortDescriptionUA,
@@ -62,45 +62,40 @@ function AddProject() {
     }
   };
 
-  const handleChangeFile = async (event) => {
-    try {
-      const formData = new FormData();
-      const file = event.target.files[0];
-      formData.append("image", file);
-      const { data } = await axios
-        .post("/upload", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-      setImg(data.url);
-    } catch (error) {
+  const handleChangeFile = (event) => {
+    const reader = new FileReader();
+    const file = event.target.files[0];
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      setImg(reader.result);
+    };
+    reader.onerror = (error) => {
       // eslint-disable-next-line no-console
-      console.log(error);
-      // eslint-disable-next-line no-alert
-      alert("Ошибка при загрузке файла");
-    }
+      console.log("Error: ", error);
+    };
   };
 
-  const handleChangeFileWebp = async (event) => {
-    try {
-      const formData = new FormData();
-      const file = event.target.files[0];
-      formData.append("image", file);
-      const { data } = await axios.post("/upload", formData);
-      setImgWebp(data.url);
-    } catch (error) {
+  const handleChangeFileWebp = (event) => {
+    const reader = new FileReader();
+    const file = event.target.files[0];
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      setImgWebp(reader.result);
+    };
+    reader.onerror = (error) => {
       // eslint-disable-next-line no-console
-      console.warn(error);
-      // eslint-disable-next-line no-alert
-      alert("Ошибка при загрузке файла");
-    }
+      console.log("Error: ", error);
+    };
   };
 
   return (
     <section className={styles.addProject}>
       <div className="container">
-        <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
+        <form
+          className={styles.form}
+          onSubmit={(e) => e.preventDefault()}
+          encType="multipart/form-data"
+        >
           <div className={styles.images}>
             <button
               className={styles.addImg}
@@ -131,21 +126,9 @@ function AddProject() {
             />
           </div>
           <div className={styles.wrapperImages}>
-            {img && (
-              <img
-                className={styles.mini}
-                // src={`http://localhost:4444${img}`}
-                src={`https://mern-portfolio-back.vercel.app${img}`}
-                alt={img}
-              />
-            )}
+            {img && <img className={styles.mini} src={img} alt={img} />}
             {imgWebp && (
-              <img
-                className={styles.mini}
-                // src={`http://localhost:4444${imgWebp}`}
-                src={`https://mern-portfolio-back.vercel.app${imgWebp}`}
-                alt={imgWebp}
-              />
+              <img className={styles.mini} src={imgWebp} alt={imgWebp} />
             )}
           </div>
           <div className={styles.wrapperTitle}>

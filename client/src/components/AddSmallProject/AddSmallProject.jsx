@@ -1,14 +1,14 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router';
-import axios from '../../utils/axios';
-import styles from '../AddProject/AddProject.module.scss';
+import React, { useRef, useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router";
+import axios from "../../utils/axios";
+import styles from "../AddProject/AddProject.module.scss";
 
 function AddSmallProject() {
   const { id } = useParams();
   const inputFileRef = useRef(null);
   const inputFileWebpRef = useRef(null);
-  const [img, setImg] = useState('');
-  const [imgWebp, setImgWebp] = useState('');
+  const [img, setImg] = useState("");
+  const [imgWebp, setImgWebp] = useState("");
   const [title, setTitle] = useState(null);
   const [skills, setSkills] = useState(null);
   const [shortDescriptionUA, setShortDescriptionUA] = useState(null);
@@ -23,7 +23,7 @@ function AddSmallProject() {
     if (id) {
       axios.get(`/small/${id}`).then((res) => {
         setTitle(res.data.title);
-        setSkills(res.data.skills.join(','));
+        setSkills(res.data.skills.join(","));
         setShortDescriptionUA(res.data.shortDescriptionUA);
         setShortDescriptionEN(res.data.shortDescriptionEN);
         setFullDescriptionUA(res.data.fullDescriptionUA);
@@ -39,10 +39,10 @@ function AddSmallProject() {
   const onSubmit = async () => {
     try {
       const fields = {
-        img,
-        imgWebp,
+        base64: img,
+        base64Webp: imgWebp,
         title,
-        skills: skills.replace(/\s/g, '').split(','),
+        skills: skills.replace(/\s/g, "").split(","),
         shortDescriptionUA,
         shortDescriptionEN,
         fullDescriptionUA,
@@ -53,43 +53,39 @@ function AddSmallProject() {
       if (id) {
         await axios.patch(`/small/${id}`, fields);
       } else {
-        await axios.post('/small', fields);
+        await axios.post("/small", fields);
       }
-      navigate('/projects');
+      navigate("/projects");
     } catch (error) {
       // eslint-disable-next-line no-console
       console.warn(error);
     }
   };
 
-  const handleChangeFile = async (event) => {
-    try {
-      const formData = new FormData();
-      const file = event.target.files[0];
-      formData.append('image', file);
-      const { data } = await axios.post('/upload', formData);
-      setImg(data.url);
-    } catch (error) {
+  const handleChangeFile = (event) => {
+    const reader = new FileReader();
+    const file = event.target.files[0];
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      setImg(reader.result);
+    };
+    reader.onerror = (error) => {
       // eslint-disable-next-line no-console
-      console.warn(error);
-      // eslint-disable-next-line no-alert
-      alert('Ошибка при загрузке файла');
-    }
+      console.log("Error: ", error);
+    };
   };
 
-  const handleChangeFileWebp = async (event) => {
-    try {
-      const formData = new FormData();
-      const file = event.target.files[0];
-      formData.append('image', file);
-      const { data } = await axios.post('/upload', formData);
-      setImgWebp(data.url);
-    } catch (error) {
+  const handleChangeFileWebp = (event) => {
+    const reader = new FileReader();
+    const file = event.target.files[0];
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      setImgWebp(reader.result);
+    };
+    reader.onerror = (error) => {
       // eslint-disable-next-line no-console
-      console.warn(error);
-      // eslint-disable-next-line no-alert
-      alert('Ошибка при загрузке файла');
-    }
+      console.log("Error: ", error);
+    };
   };
 
   return (
@@ -104,7 +100,12 @@ function AddSmallProject() {
             >
               Загрузить картинку img
             </button>
-            <input ref={inputFileRef} type="file" onChange={handleChangeFile} hidden />
+            <input
+              ref={inputFileRef}
+              type="file"
+              onChange={handleChangeFile}
+              hidden
+            />
 
             <button
               className={styles.addImg}
@@ -113,12 +114,17 @@ function AddSmallProject() {
             >
               Загрузить картинку webp
             </button>
-            <input ref={inputFileWebpRef} type="file" onChange={handleChangeFileWebp} hidden />
+            <input
+              ref={inputFileWebpRef}
+              type="file"
+              onChange={handleChangeFileWebp}
+              hidden
+            />
           </div>
           <div className={styles.wrapperImages}>
-            {img && <img className={styles.mini} src={`http://localhost:4444${img}`} alt={img} />}
+            {img && <img className={styles.mini} src={img} alt={img} />}
             {imgWebp && (
-              <img className={styles.mini} src={`http://localhost:4444${imgWebp}`} alt={imgWebp} />
+              <img className={styles.mini} src={imgWebp} alt={imgWebp} />
             )}
           </div>
           <div className={styles.wrapperTitle}>
@@ -146,7 +152,10 @@ function AddSmallProject() {
             </label>
           </div>
           <div className={styles.wrapperShortDescriptionUA}>
-            <label htmlFor="shortDescriptionUA" className={styles.shortDescriptionUA}>
+            <label
+              htmlFor="shortDescriptionUA"
+              className={styles.shortDescriptionUA}
+            >
               shortDescriptionUA
               <input
                 type="text"
@@ -158,7 +167,10 @@ function AddSmallProject() {
             </label>
           </div>
           <div className={styles.wrapperShortDescriptionEN}>
-            <label htmlFor="shortDescriptionEN" className={styles.shortDescriptionEN}>
+            <label
+              htmlFor="shortDescriptionEN"
+              className={styles.shortDescriptionEN}
+            >
               shortDescriptionEN
               <input
                 type="text"
@@ -170,7 +182,10 @@ function AddSmallProject() {
             </label>
           </div>
           <div className={styles.wrapperFullDescriptionUA}>
-            <label htmlFor="fullDescriptionUA" className={styles.fullDescriptionUA}>
+            <label
+              htmlFor="fullDescriptionUA"
+              className={styles.fullDescriptionUA}
+            >
               fullDescriptionUA
               <input
                 type="text"
@@ -182,7 +197,10 @@ function AddSmallProject() {
             </label>
           </div>
           <div className={styles.wrapperFullDescriptionEN}>
-            <label htmlFor="fullDescriptionEN" className={styles.fullDescriptionEN}>
+            <label
+              htmlFor="fullDescriptionEN"
+              className={styles.fullDescriptionEN}
+            >
               fullDescriptionEN
               <input
                 type="text"
@@ -218,7 +236,7 @@ function AddSmallProject() {
             </label>
           </div>
           <button type="submit" className={styles.btn} onClick={onSubmit}>
-            {!id ? 'Добавить' : 'Сохранить'}
+            {!id ? "Добавить" : "Сохранить"}
           </button>
         </form>
       </div>

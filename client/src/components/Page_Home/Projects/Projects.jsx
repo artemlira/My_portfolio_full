@@ -109,16 +109,8 @@ export const Card = forwardRef(
     <div className={styles.card} ref={ref}>
       <div className={styles.cardImage}>
         <picture>
-          <source
-            // srcSet={`http://localhost:4444${imgWebp}`}
-            srcSet={`https://mern-portfolio-back.vercel.app${imgWebp}`}
-            type="image/webp"
-          />
-          {/* <img src={`http://localhost:4444${img}`} alt={title} /> */}
-          <img
-            src={`https://mern-portfolio-back.vercel.app${img}`}
-            alt={title}
-          />
+          <source srcSet={imgWebp} type="image/webp" />
+          <img src={img} alt={title} />
         </picture>
       </div>
       <div className={styles.cardSkills}>

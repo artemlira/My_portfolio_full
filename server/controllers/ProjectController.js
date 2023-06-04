@@ -1,6 +1,4 @@
 import ProjectModel from '../models/Project.js';
-// import path, { dirname } from 'path';
-// import { fileURLToPath } from 'url';
 
 export const getAll = async (req, res) => {
   try {
@@ -14,61 +12,15 @@ export const getAll = async (req, res) => {
   }
 };
 
-// export const create = async (req, res) => {
-//   try {
-//     if (req.files) {
-//       let fileName = req.files.image.name;
-//       const __dirname = dirname(fileURLToPath(import.meta.url));
-//       req.files.image.mv(path.join(__dirname, '..', 'uploads', fileName));
-
-//       const newProjectWithImage = new ProjectModel({
-//         title: req.body.title,
-//         skills: req.body.skills,
-//         img: fileName,
-//         // imgWebp: fileName,
-//         shortDescriptionUA: req.body.shortDescriptionUA,
-//         shortDescriptionEN: req.body.shortDescriptionEN,
-//         fullDescriptionUA: req.body.fullDescriptionUA,
-//         fullDescriptionEN: req.body.fullDescriptionEN,
-//         git: req.body.git,
-//         deploy: req.body.deploy,
-//         user: req.userId,
-//       });
-
-//       await newProjectWithImage.save();
-//       return res.json(newProjectWithImage);
-//     }
-
-//     const newProjectWithoutImage = new ProjectModel({
-//       title: req.body.title,
-//       skills: req.body.skills,
-//       img: '',
-//       // imgWebp: '',
-//       shortDescriptionUA: req.body.shortDescriptionUA,
-//       shortDescriptionEN: req.body.shortDescriptionEN,
-//       fullDescriptionUA: req.body.fullDescriptionUA,
-//       fullDescriptionEN: req.body.fullDescriptionEN,
-//       git: req.body.git,
-//       deploy: req.body.deploy,
-//       user: req.userId,
-//     });
-//     await newProjectWithoutImage.save();
-//     res.json(newProjectWithoutImage);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({
-//       message: 'Не удалось добавить проект',
-//     });
-//   }
-// };
-
 export const create = async (req, res) => {
+  const { base64 } = req.body;
+  const { base64Webp } = req.body;
   try {
-    const doc = new ProjectModel({
+    ProjectModel.create({
       title: req.body.title,
       skills: req.body.skills,
-      img: req.body.img,
-      imgWebp: req.body.imgWebp,
+      img: base64,
+      imgWebp: base64Webp,
       shortDescriptionUA: req.body.shortDescriptionUA,
       shortDescriptionEN: req.body.shortDescriptionEN,
       fullDescriptionUA: req.body.fullDescriptionUA,
@@ -78,8 +30,8 @@ export const create = async (req, res) => {
       user: req.userId,
     });
 
-    const project = await doc.save();
-    res.json(project);
+    // const project = await doc.save();
+    res.send({ Status: 'ok' });
   } catch (err) {
     console.log(err);
     res.status(500).json({
@@ -124,6 +76,8 @@ export const getOne = async (req, res) => {
 export const update = async (req, res) => {
   try {
     const projectId = req.params.id;
+    const { base64 } = req.body;
+    const { base64Webp } = req.body;
     await ProjectModel.updateOne(
       {
         _id: projectId,
@@ -131,8 +85,8 @@ export const update = async (req, res) => {
       {
         title: req.body.title,
         skills: req.body.skills,
-        img: req.body.img,
-        imgWebp: req.body.imgWebp,
+        img: base64,
+        imgWebp: base64Webp,
         shortDescriptionUA: req.body.shortDescriptionUA,
         shortDescriptionEN: req.body.shortDescriptionEN,
         fullDescriptionUA: req.body.fullDescriptionUA,

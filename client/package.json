@@ -68,7 +68,7 @@
     "vite-plugin-pages": "^0.28.0"
   },
   "browserslist": [
-    "cover 50%"
+    "cover 99.5%"
   ],
   "lint-staged": {
     "**/*.js": [
